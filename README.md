@@ -24,8 +24,8 @@
 
 ### Semester Assignments
 
-- Link to Assignment 1: [**Assignment 1**](https://mjospovich.github.io/human-computer-interaction/assigments/assigment_1/figma_video.mp4)
-- Link to Assignment 2: [**Assignment 2**](URL_TO_ASSIGNMENT_2) <!-- Replace with actual URL -->
+- Link to Assignment 1: [**Assignment 1**](https://mjospovich.github.io/human-computer-interaction/assignments/assignment_1/figma_video.mp4)
+- Link to Assignment 2: [**Assignment 2**](https://mjospovich.github.io/human-computer-interaction/assignments/assignment_2/User_personas_IA.pdf)
 - Link to Assignment 3: [**Assignment 3**](URL_TO_ASSIGNMENT_3) <!-- Replace with actual URL -->
 <!-- Add more assignments as necessary -->
 
