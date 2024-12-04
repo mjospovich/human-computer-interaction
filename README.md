@@ -27,6 +27,7 @@
 - Link to Assignment 1: [**Assignment 1**](https://mjospovich.github.io/human-computer-interaction/assignments/assignment_1/figma_video.mp4)
 - Link to Assignment 2: [**Assignment 2**](https://mjospovich.github.io/human-computer-interaction/assignments/assignment_2/User_personas_IA.pdf)
 - Link to Assignment 3: [**Assignment 3**](https://hcitestdeploy.vercel.app)
+- Link to Assignment 4: [**Assignment 4**](https://mjospovich.github.io/human-computer-interaction/assignments/assignment_4/kupujemAutoHighFidelity.png)
 
 ## Project Requirements
 
