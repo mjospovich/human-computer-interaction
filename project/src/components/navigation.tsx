@@ -1,7 +1,8 @@
 "use client";
 
 import Link from "next/link";
-import Logo from "../assets/kupujem_auto_logo.svg";
+import Logo from "../assets/KupujemAutoLogo.svg";
+import LogoLight from "../assets/KupujemAutoLogoLight.svg";
 import { usePathname } from "next/navigation";
 
 type Page = {
@@ -10,7 +11,7 @@ type Page = {
 };
 
 const pages: Page[] = [
-  { title: "Početna", path: "/" },
+  { title: "Procijeni vrijednost ", path: "/" },
   { title: "Popularno", path: "/popularno" },
   { title: "Podrška", path: "/podrska" },
   { title: "O nama", path: "/onama" },
@@ -22,7 +23,7 @@ function processPage(page: Page, index: number, pathname: string) {
     <li key={index}>
       <Link
         href={page.path}
-        className={pathname === page.path ? "font-bold" : ""}
+        className={pathname === page.path ? "font-bold text-main-text-black" : ""}
       >
         {page.title}
       </Link>
@@ -43,7 +44,7 @@ export function Navigation() {
 
       {/* Navigation Section */}
       <nav>
-        <ul className="flex space-x-4">
+        <ul className="flex space-x-4 text-main-text-black">
           {pages.map((page, index) => processPage(page, index, pathname))}
         </ul>
       </nav>

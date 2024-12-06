@@ -14,9 +14,16 @@ const config: Config = {
       colors: {
         background: "var(--background)",
         foreground: "var(--foreground)",
+        brand: "var(--brand)",
+        'brand-light': "var(--brand-light)",
+        'main-text-black': "var(--main-text-black)",
+        'secondary-text-black': "var(--secondary-text-black)",
+        'discreet-text-black': "var(--discreet-text-black)",
+        'container-white': "var(--container-white)",
       },
     },
   },
   plugins: [],
 };
+
 export default config;

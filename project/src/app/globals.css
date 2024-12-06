@@ -7,8 +7,14 @@
 
 
 :root {
-  --background: #5faf3ddff;
-  --foreground: #50514fff;
+  --brand: #2371c9ff;
+  --brand-light: #d5e8f6ff;
+  --main-text-black: #272727ff;
+  --secondary-text-black: #767676ff;
+  --discreet-text-black: #949494ff;
+  --container-white: #fafafaff;
+  --background: #f0f0f0ff;
+  --foreground: #272727ff;
 }
 
 /*
