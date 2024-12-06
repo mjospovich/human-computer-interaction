@@ -21,6 +21,9 @@ const config: Config = {
         'discreet-text-black': "var(--discreet-text-black)",
         'container-white': "var(--container-white)",
       },
+      fontSize: {
+        xs: '0.65rem',
+      },
     },
   },
   plugins: [],
