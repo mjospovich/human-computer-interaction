@@ -8,10 +8,10 @@ export default function ProcijeniVrijednost() {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <main className="flex min-h-screen flex-col items-center justify-center p-10">
+    <main className="flex min-h-screen flex-col items-center justify-center md:justify-center p-10">
       <Navigation setIsOpen={setIsOpen} />
       <div className="mb-4 text-center w-full max-w-xl">
-        <ListingToScoreImg className="mb-0 mx-auto w-1/2" />
+        <ListingToScoreImg className="mb-3 md:mb-0 mx-auto w-2/3 md:w-1/2" />
         <p className="text-secondary-text-black text-left mb-2 text-sm">
           1. Kopiraj link oglasa automobila s jednog od podržanih oglasnika (Njuškalo).
         </p>
@@ -19,7 +19,7 @@ export default function ProcijeniVrijednost() {
           2. Zalijepi link u polje ili manunalno unesi podatke za procjenu vrijednosti automobila.
         </p>
       </div>
-      <div className={`relative w-full max-w-2xl ${isOpen ? "-z-10" : "z-10"}`}>
+      <div className={`mb-1 fixed bottom-2 max-w-lg md:relative md:bottom-0 md:max-w-2xl w-11/12 ${isOpen ? "-z-10" : "z-10"} `}>
         <input
           className="shadow-sm appearance-none border rounded-full w-full py-4 px-6 text-main-text-black leading-tight focus:outline-none focus:shadow-outline placeholder-secondary-text-black"
           id="entry"
@@ -40,12 +40,12 @@ export default function ProcijeniVrijednost() {
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 12h14M12 5l7 7-7 7"></path>
           </svg>
         </button>
-      </div>
-      <button className="mt-4 py-3 px-4 bg-brand-light text-main-text-black rounded-full text-sm hover:bg-brand hover:text-white">
+      </div> 
+      <button className="md:mt-3 py-3 px-4 bg-brand-light text-main-text-black rounded-full text-sm hover:bg-brand hover:text-white">
         Manualni unos
       </button>
       <p className="mt-3 text-xs text-secondary-text-black text-center">Nemam Link?</p>
-      <p className="mt-8 mb-2 text-xs text-discreet-text-black text-center max-w-lg fixed bottom-2 -z-10">
+      <p className="mt-8 mb-2 text-xs text-discreet-text-black text-center max-w-lg fixed bottom-2 -z-10 hidden md:block">
         Napomena: Procjena je izrađena na temelju unesenih informacija i dostupnih podataka. Ne možemo jamčiti potpunu točnost ili ispravnost podataka iz oglasa. Rezultati procjene služe isključivo informativnoj svrsi i ne predstavljaju stručni ili financijski savjet.
       </p>
     </main>
