@@ -32,16 +32,20 @@ export default function PopularnoPage() {
   };
 
   return (
-    <main className="flex min-h-screen flex-col items-center justify-center p-10">
+    <main className="flex min-h-screen flex-col items-center justify-start p-10 bg-gray-100">
       <Navigation setIsOpen={setIsOpen} />
-      <div className={`grid w-2/3 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 ${isOpen ? "-z-10" : "z-10"}`}>
+
+      {/* Grid Container */}
+      <div className={`w-2/3 max-w-2xl grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-4 mt-8 ${isOpen ? "-z-10" : "z-10"}`}>
         {renderCarCards(visibleCards)}
       </div>
+
+      {/* Load More Button */}
       {visibleCards < 18 && (
-        <div className="flex justify-center items-center w-full mt-5">
+        <div className="flex justify-center items-center w-full mt-6">
           <button
             onClick={loadMoreCards}
-            className="py-3 px-4 bg-brand-light text-main-text-black rounded-full text-sm hover:bg-brand hover:text-white"
+            className="py-2 px-6 bg-brand-light text-main-text-black rounded-full text-sm hover:bg-brand hover:text-white transition-colors duration-300"
           >
             Load More
           </button>
