@@ -59,7 +59,7 @@ export function Navigation({ setIsOpen }: NavigationProps) {
   }, [isOpen, setIsOpen]);
 
   return (
-    <header className={`fixed top-0 left-0 w-full flex justify-between items-center p-4 ${isOpen ? "bg-container-white shadow-md" : ""}`}>
+    <header className={`bg-background fixed top-0 left-0 w-full flex justify-between items-center p-4 z-50 ${isOpen ? "bg-container-white shadow-md" : ""}`}>
       {/* Logo Section */}
       <div className="text-lg font-bold">
         <Link href="/">
