@@ -1,3 +1,5 @@
+// src/app/popularno/page.tsx
+
 "use client";
 
 import { useState } from "react";
@@ -12,15 +14,16 @@ export default function PopularnoPage() {
   const renderCarCards = (count: number) => {
     const cards = [];
     for (let i = 0; i < count; i++) {
+      const carId = `car-${i + 1}`; // Unique ID for each car
       cards.push(
-        <div key={i} className="flex justify-center items-center">
-          <CarCard
-            imageUrl="/testCar.jpg"
-            name={`Car Name Test ${i + 1}`}
-            price="€ 20,000"
-            rating={91}
-          />
-        </div>
+        <CarCard
+          key={carId}
+          id={carId}
+          imageUrl="/testCar.jpg"
+          name={`Car Name Test ${i + 1}`}
+          price="€ 20,000"
+          rating={91}
+        />
       );
     }
     return cards;
@@ -32,11 +35,23 @@ export default function PopularnoPage() {
   };
 
   return (
-    <main className="flex min-h-screen flex-col items-center justify-start p-10 bg-gray-100">
+    <main className="flex min-h-screen flex-col items-center justify-start py-8 sm-grid:p-8 bg-gray-100">
       <Navigation setIsOpen={setIsOpen} />
 
+      {/* Title and Description */}
+      <div className="text-center mt-8">
+        <h1 className="text-xl sm-grid:text-2xl md-grid:text-3xl font-bold text-main-text-black mb-4">
+          Procijeni Popularne Oglase
+        </h1>
+        <p className="text-xs sm-grid:text-sm text-secondary-text-black w-2/3 mx-auto">
+          Ovo su oglasi koje su korisnici najčešće pretraživali u posljednjih mjesec dana.
+          Saznaj i ti njihovu procijenenu vrijednost!
+        </p>
+      </div>
+
+
       {/* Grid Container */}
-      <div className={`w-2/3 max-w-2xl grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-4 mt-8 ${isOpen ? "-z-10" : "z-10"}`}>
+      <div className={`w-2/3 mx-auto max-w-2xl grid grid-cols-1 md-grid:grid-cols-2 lg-grid:grid-cols-3 gap-4 md-grid:gap-4 lg-grid:gap- mt-8 ${isOpen ? "-z-10" : "z-10"}`}>
         {renderCarCards(visibleCards)}
       </div>
 

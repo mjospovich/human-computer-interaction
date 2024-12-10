@@ -24,6 +24,11 @@ const config: Config = {
       fontSize: {
         xs: '0.65rem',
       },
+      screens: {
+        'sm-grid': '444px',
+        'md-grid': '778px',
+        'lg-grid': '1106px',
+      },
     },
   },
   plugins: [],
