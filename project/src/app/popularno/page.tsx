@@ -2,6 +2,8 @@
 
 "use client";
 
+import { getPopularCars } from '@/lib/carData';
+import type { PopularCar } from '@/types/car';
 import { useState } from "react";
 import { Navigation } from "@/components/navigation";
 import { CarCard } from "@/components/carCard";
@@ -9,24 +11,20 @@ import { CarCard } from "@/components/carCard";
 export default function PopularnoPage() {
   const [isOpen, setIsOpen] = useState(false);
   const [visibleCards, setVisibleCards] = useState(6);
+  const cars = getPopularCars();
 
   // Function to generate CarCard components
   const renderCarCards = (count: number) => {
-    const cards = [];
-    for (let i = 0; i < count; i++) {
-      const carId = `car-${i + 1}`; // Unique ID for each car
-      cards.push(
-        <CarCard
-          key={carId}
-          id={carId}
-          imageUrl="/testCar.jpg"
-          name={`Car Name Test ${i + 1}`}
-          price="€ 20,000"
-          rating={91}
-        />
-      );
-    }
-    return cards;
+    return cars.slice(0, count).map((car) => (
+      <CarCard
+        key={car.id}
+        id={car.id}
+        imageUrl={car.imageUrl}
+        name={car.name}
+        price={`€ ${car.price.toLocaleString()}`}
+        rating={91} // Placeholder until rating system is implemented
+      />
+    ));
   };
 
   // Function to load more cards
