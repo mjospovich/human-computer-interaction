@@ -1,73 +1,129 @@
-// src/app/cars/[id]/page.tsx
-
 "use client";
 
-import { useRouter } from 'next/router';
-import Image from 'next/image';
 import { useEffect, useState } from 'react';
+import Image from 'next/image';
+import carsData from '@/data/template.json';
+import { Navigation } from "@/components/navigation";
 
 type CarDetail = {
   id: string;
-  name: string;
-  price: string;
-  rating: number;
-  imageUrl: string;
+  title: string;
+  price: number;
+  img: string;
+  year: number;
+  mileage: number;
+  engine_power: number;
+  fuel_type: string;
+  transmission: string;
+  location: string;
+  brand: string;
+  model: string;
+  model_type: string;
+  model_year: string;
+  in_traffic_from: string | null;
+  engine_displacement: string;
+  fuel_consumption: string | null;
+  co2_emission: string | null;
+  eco_category: string | null;
+  condition: string;
+  service_book: boolean;
+  video_call_available: boolean;
+  garage_kept: boolean;
 };
 
 export default function CarDetailPage({ params }: { params: { id: string } }) {
+  const [isOpen, setIsOpen] = useState(false);
   const { id } = params;
   const [car, setCar] = useState<CarDetail | null>(null);
 
   useEffect(() => {
-    // Temporary static data
-    const carData: { [key: string]: CarDetail } = {
-      'car-1': {
-        id: 'car-1',
-        name: 'Car Name Test 1',
-        price: '€ 20,000',
-        rating: 91,
-        imageUrl: '/testCar.jpg',
-      },
-      'car-2': {
-        id: 'car-2',
-        name: 'Car Name Test 2',
-        price: '€ 25,000',
-        rating: 88,
-        imageUrl: '/testCar.jpg',
-      },
-      'car-3': {
-        id: 'car-3',
-        name: 'Car Name Test 3',
-        price: '€ 30,000',
-        rating: 95,
-        imageUrl: '/testCar.jpg',
-      },
-      // Add more car entries as needed
-    };
-
-    // Fetch the car data based on the id
-    const fetchedCar = carData[id];
-    setCar(fetchedCar || null);
+    const fetchedCar = Object.values(carsData).find(car => car.id === id);
+    if (fetchedCar) {
+      const {description, features, ...carDetails} = fetchedCar;
+      setCar(carDetails as CarDetail);
+    } else {
+      setCar(null);
+    }
   }, [id]);
 
   if (!car) {
     return (
-      <div className="min-h-screen flex flex-col items-center justify-center bg-gray-100 p-10">
-        <h1 className="text-2xl font-bold mb-4">Car Not Found</h1>
-        <p className="text-gray-700">The car you are looking for does not exist.</p>
-      </div>
+      <main className="flex min-h-screen flex-col items-center justify-center md:justify-center p-10">
+        <Navigation setIsOpen={setIsOpen} />
+        <div className="flex flex-col items-center justify-center">
+          <h1 className="text-2xl font-bold mb-4">Car Not Found</h1>
+          <p className="text-secondary-text-black">The car you are looking for does not exist.</p>
+        </div>
+      </main>
     );
   }
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center bg-gray-100 p-10">
-      <h1 className="text-3xl font-bold mb-4">{car.name}</h1>
-      <div className="w-80 h-80 relative mb-4">
-        <Image src={car.imageUrl} alt={car.name} layout="fill" objectFit="cover" />
+    <main className="flex min-h-screen flex-col items-center p-10">
+      <Navigation setIsOpen={setIsOpen} />
+      
+      <div className="flex gap-8 w-full max-w-4xl mt-8">
+        {/* Left Column - Scrollable */}
+        <div className="w-2/3 space-y-6">
+          {/* Image Container */}
+          <div className="w-full aspect-video relative rounded-lg overflow-hidden">
+            <Image 
+              src={car.img} 
+              alt={car.title} 
+              fill 
+              className="object-cover"
+            />
+          </div>
+  
+          
+          {/* Details Section */}
+          <div className="space-y-4 bg-container-white p-6 rounded-lg shadow">
+            <div className="space-y-3">
+              <p className="pb-2 border-b border-gray-200"><span className="font-medium text-main-text-black">Oglas:</span> {car.title}</p>
+              <p className="pb-2 border-b border-gray-200"><span className="font-medium text-main-text-black">Marka:</span> {car.brand}</p>
+              <p className="pb-2 border-b border-gray-200"><span className="font-medium text-main-text-black" >Model:</span> {car.model}</p>
+              <p className="pb-2 border-b border-gray-200"><span className="font-medium text-main-text-black" >Tip modela:</span> {car.model_type}</p>
+              <p className="pb-2 border-b border-gray-200"><span className="font-medium text-main-text-black">Godina:</span> {car.year}</p>
+              <p className="pb-2 border-b border-gray-200"><span className="font-medium text-main-text-black">Kilometraža:</span> {car.mileage.toLocaleString()} km</p>
+              <p className="pb-2 border-b border-gray-200"><span className="font-medium text-main-text-black">Snaga motora:</span> {car.engine_power} kW</p>
+              <p className="pb-2 border-b border-gray-200"><span className="font-medium text-main-text-black">Gorivo:</span> {car.fuel_type}</p>
+              <p className="pb-2 border-b border-gray-200"><span className="font-medium text-main-text-black">Mjenjač:</span> {car.transmission}</p>
+              <p className="pb-2 border-b border-gray-200"><span className="font-medium text-main-text-black">Lokacija:</span> {car.location}</p>
+              <p className="pb-2 border-b border-gray-200"><span className="font-medium text-main-text-black">Motor:</span> {car.engine_displacement}</p>
+              {/*last doesn have the underline*/}
+              <p><span className="font-medium text-main-text-black">Stanje:</span> {car.condition}</p>
+            </div>
+          </div>
+        </div>
+
+  
+        {/* Right Column - Fixed */}
+        <div className="w-1/3">
+          <div className="sticky top-16 bg-container-white p-6 rounded-lg shadow space-y-4">
+            {/* Title Section */}
+            <div className="space-y-2">
+              <h1 className="text-xl font-bold text-main-text-black">
+                {`${car.brand} ${car.model} ${car.model_type}`}
+              </h1>
+            </div>
+  
+            {/* Price Section */}
+            <div className="mt-4">
+              <p className="text-4xl font-bold text-main-text-black">€ {car.price.toLocaleString()}</p>
+            </div>
+  
+            {/* Rating Placeholder */}
+            <div className="mt-4 p-4 bg-gray-100 rounded">
+              <p className="text-gray-600">Rating Placeholder</p>
+            </div>
+  
+            {/* Link Placeholder */}
+            <div className="mt-4 p-4 bg-gray-100 rounded">
+              <p className="text-gray-600">Link Placeholder</p>
+            </div>
+          </div>
+        </div>
       </div>
-      <p className="text-lg mb-2"><strong>Price:</strong> {car.price}</p>
-      <p className="text-lg mb-2"><strong>Rating:</strong> {car.rating}</p>
-      {/* Add more car details as needed */}
-    </div>
+    </main>
   );
 }
