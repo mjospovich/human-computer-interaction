@@ -71,7 +71,7 @@ export default function CarDetailPage({ params }: { params: { id: string } }) {
               src={car.img} 
               alt={car.title} 
               fill 
-              className="object-cover"
+              className="object-cover object-[50%_30%]"
             />
           </div>
   

@@ -20,9 +20,9 @@ export default function PopularnoPage() {
         key={car.id}
         id={car.id}
         imageUrl={car.imageUrl}
-        name={car.name}
+        name={`${car.brand} ${car.model} ${car.model_type}`}
         price={`€ ${car.price.toLocaleString()}`}
-        rating={91} // Placeholder until rating system is implemented
+        rating={91}
       />
     ));
   };

@@ -6,6 +6,9 @@ export function getPopularCars(): PopularCar[] {
     id: car.id,
     imageUrl: car.img,
     name: car.title,
-    price: car.price
+    price: car.price,
+    brand: car.brand,
+    model: car.model,
+    model_type: car.model_type
   }));
 }
