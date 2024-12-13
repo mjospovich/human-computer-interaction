@@ -62,18 +62,18 @@ export default function CarDetailPage({ params }: { params: { id: string } }) {
     <main className="flex min-h-screen flex-col items-center p-10">
       <Navigation setIsOpen={setIsOpen} />
       
-      <div className="flex gap-8 w-full max-w-4xl mt-8">
-        {/* Left Column - Scrollable */}
-        <div className="w-2/3 space-y-6">
+      <div className="flex flex-col-reverse md:flex-row gap-8 w-full max-w-4xl mt-8">
+      {/* Left Column - Scrollable */}
+        <div className="w-full md:w-2/3 space-y-6">
           {/* Image Container */}
           <div className="w-full aspect-video relative rounded-lg overflow-hidden">
-            <Image 
-              src={car.img} 
-              alt={car.title} 
-              fill 
-              className="object-cover object-[50%_30%]"
-            />
-          </div>
+              <Image 
+                src={car.img} 
+                alt={car.title} 
+                fill 
+                className="object-cover object-[50%_30%]"
+              />
+            </div>
   
           
           {/* Details Section */}
@@ -98,8 +98,8 @@ export default function CarDetailPage({ params }: { params: { id: string } }) {
 
   
         {/* Right Column - Fixed */}
-        <div className="w-1/3">
-          <div className="sticky top-16 bg-container-white p-6 rounded-lg shadow space-y-4">
+        <div className="w-full md:w-1/3">
+          <div className="sticky top-8 bg-container-white p-6 rounded-lg shadow space-y-4">
             {/* Title Section */}
             <div className="space-y-2">
               <h1 className="text-xl font-bold text-main-text-black">
