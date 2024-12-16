@@ -23,6 +23,7 @@ export default function PopularnoPage() {
         name={`${car.brand} ${car.model} ${car.model_type}`}
         price={`€ ${car.price.toLocaleString()}`}
         rating={91}
+        brand={car.brand}
       />
     ));
   };

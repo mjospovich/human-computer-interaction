@@ -2,6 +2,7 @@
 
 import Link from 'next/link';
 import Image from 'next/image';
+import { brandLogos } from '@/data/brandLogos';
 
 type CarCardProps = {
   id: string;
@@ -9,6 +10,7 @@ type CarCardProps = {
   name: string;
   price: string;
   rating: number;
+  brand: string;
 };
 
 const truncateText = (text: string, limit: number = 80) => {
@@ -35,15 +37,17 @@ const getTextClass = (text: string) => {
 };
 
 
-export function CarCard({ id, imageUrl, name, price, rating }: CarCardProps) {
+export function CarCard({ id, imageUrl, name, price, rating, brand }: CarCardProps) {
   const displayName = truncateText(name);
+  const logoPath = brandLogos[brand];
+
 
   return (
     <Link href={`/cars/${id}`} passHref>
       <div className="w-full sm-grid:w-56 h-56 mx-auto bg-container-white shadow-md rounded-xl overflow-hidden flex flex-col cursor-pointer hover:shadow-lg transition-shadow duration-300 group">
-        
+
         {/*Image*/}
-        <div className="relative h-2/3">
+        <div className="relative h-3/4">
           <Image
             src={imageUrl}
             alt={name}
@@ -56,19 +60,29 @@ export function CarCard({ id, imageUrl, name, price, rating }: CarCardProps) {
           </div>
         </div>
 
-        {/* Car Details */}
-        <div className="flex-grow flex flex-col justify-end p-2">
-          <div className="mt-auto">
-            <p className={`font-semibold line-clamp-2 min-h-[2.5rem] ${getTextClass(name)}`}>
+       {/* Car Details */}
+      <div className="flex-grow flex flex-col justify-end p-2">
+          <div className="flex items-center gap-2 mb-1">
+            <p className={`font-semibold line-clamp-2  text-w ${getTextClass(name)}`}>
               {displayName}
             </p>
-            <div className="flex justify-between items-center mt-1">
-              <span className="text-secondary-text-black text-xs font-semibold">{price}</span>
-              <span className="text-secondary-text-black text-xs font-semibold">{rating}</span>
-            </div>
           </div>
-        </div>
-        
+          <div className="flex justify-between items-center mt-1">
+            <span className="text-secondary-text-black text-sm font-semibold">{price}</span>
+            {logoPath && (
+              <div className="w-6 h-6 flex-shrink-0 text-secondary-text-black">
+                <Image
+                  src={logoPath}
+                  alt={`${brand} logo`}
+                  width={24}
+                  height={24}
+                  className="object-contain"
+                />
+              </div>
+            )}
+          </div>
+      </div>
+              
       </div>
     </Link>
   );
