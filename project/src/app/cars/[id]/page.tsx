@@ -66,15 +66,18 @@ export default function CarDetailPage({ params }: { params: { id: string } }) {
       {/* Left Column - Scrollable */}
         <div className="w-full md:w-2/3 space-y-6">
           {/* Image Container */}
-          <div className="w-full aspect-video relative rounded-lg overflow-hidden">
-              <Image 
-                src={car.img} 
-                alt={car.title} 
-                fill 
-                className="object-cover object-[50%_30%]"
-              />
-            </div>
-  
+          <div className="w-full relative rounded-lg overflow-hidden">
+            <Image 
+              src={car.img} 
+              alt={car.title}
+              width={896}  // 2/3 of max-w-4xl (1536px)
+              height={0}   // Auto height
+              className="object-contain w-full h-auto"
+              sizes="(max-width: 768px) 100vw, 66vw"
+              priority
+            />
+          </div>
+          
           
           {/* Details Section */}
           <div className="space-y-4 bg-container-white p-6 rounded-lg shadow">
@@ -99,7 +102,7 @@ export default function CarDetailPage({ params }: { params: { id: string } }) {
   
         {/* Right Column - Fixed */}
         <div className="w-full md:w-1/3">
-          <div className="sticky top-8 bg-container-white p-6 rounded-lg shadow space-y-4">
+          <div className="sticky top-12 bg-container-white p-6 rounded-lg shadow space-y-4">
             {/* Title Section */}
             <div className="space-y-2">
               <h1 className="text-xl font-bold text-main-text-black">
