@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
+import { useEffect, useRef } from "react";
 import Link from "next/link";
 import Logo from "../assets/KupujemAutoLogo.svg";
 import { usePathname } from "next/navigation";
@@ -18,9 +18,10 @@ const pages: Page[] = [
   { title: "Prijavi se", path: "/prijavise" },
 ];
 
-type NavigationProps = {
+export interface NavigationProps {
+  isOpen: boolean;
   setIsOpen: (isOpen: boolean) => void;
-};
+}
 
 function processPage(page: Page, index: number, pathname: string) {
   return (
@@ -35,15 +36,13 @@ function processPage(page: Page, index: number, pathname: string) {
   );
 }
 
-export function Navigation({ setIsOpen }: NavigationProps) {
-  const [isOpen, setIsOpenState] = useState(false);
+export function Navigation({ isOpen, setIsOpen }: NavigationProps) {
   const pathname = usePathname();
   const menuRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
-        setIsOpenState(false);
         setIsOpen(false);
       }
     };
@@ -70,7 +69,7 @@ export function Navigation({ setIsOpen }: NavigationProps) {
       {/* Hamburger Menu Button */}
       <div className="-mr-2 flex md:hidden">
         <button
-          onClick={() => setIsOpenState(!isOpen)}
+          onClick={() => setIsOpen(!isOpen)}
           type="button"
           className="inline-flex items-center justify-center p-2 rounded-md text-main-text-black hover:text-secondary-text-black focus:outline-none"
           aria-controls="mobile-menu"
@@ -98,7 +97,7 @@ export function Navigation({ setIsOpen }: NavigationProps) {
 
       {/* Mobile Menu */}
       {isOpen && (
-        <div className="fixed inset-0 z-50" onClick={() => setIsOpenState(false)}>
+        <div className="fixed inset-0 z-50" onClick={() => setIsOpen(false)}>
           <div className="fixed inset-0 bg-black opacity-50 z-50"></div>
           <div ref={menuRef} className="relative z-50 bg-white shadow-md w-full p-4">
             <div className="flex justify-between items-center">
@@ -106,7 +105,7 @@ export function Navigation({ setIsOpen }: NavigationProps) {
                 <Logo className="h-5 w-auto" alt="My Logo" />
               </Link>
               <button
-                onClick={() => setIsOpenState(false)}
+                onClick={() => setIsOpen(false)}
                 type="button"
                 className="inline-flex items-center justify-center p-2 rounded-md text-main-text-black hover:text-secondary-text-black focus:outline-none"
               >

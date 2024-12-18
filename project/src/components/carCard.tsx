@@ -9,13 +9,13 @@ type CarCardProps = {
   imageUrl: string;
   name: string;
   price: string;
-  rating: number;
+  //rating: number;
   brand: string;
 };
 
 const truncateText = (text: string, limit: number = 80) => {
   // Add space before # if it exists
-  let processedText = text.replace(/#/g, ' #');
+  const processedText = text.replace(/#/g, ' #');
   
   // Normalize spaces
   const normalizedText = processedText.replace(/\s+/g, ' ').trim();
@@ -37,7 +37,7 @@ const getTextClass = (text: string) => {
 };
 
 
-export function CarCard({ id, imageUrl, name, price, rating, brand }: CarCardProps) {
+export function CarCard({ id, imageUrl, name, price, brand }: CarCardProps) {
   const displayName = truncateText(name);
   const logoPath = brandLogos[brand];
 

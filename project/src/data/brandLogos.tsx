@@ -1,9 +1,11 @@
-import { BrandLogo } from '../types/brands';
-
 // Add other logos
 // Make sure they are in square format (the file, not the logo itself)
 // Check SVG with https://jakearchibald.github.io/svgomg/
-export const brandLogos: Record<string, string> = {
+interface BrandLogosMap {
+  [key: string]: string;
+}
+
+export const brandLogos: BrandLogosMap = {
   "Abarth": "/logos/abarth.svg",
   "Acura": "/logos/acura.svg",
   "Alfa Romeo": "/logos/alfa-romeo.svg",

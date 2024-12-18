@@ -39,7 +39,7 @@ export default function CarDetailPage({ params }: { params: { id: string } }) {
   useEffect(() => {
     const fetchedCar = Object.values(carsData).find(car => car.id === id);
     if (fetchedCar) {
-      const {description, features, ...carDetails} = fetchedCar;
+      const { ...carDetails} = fetchedCar;
       setCar(carDetails as CarDetail);
     } else {
       setCar(null);
@@ -49,7 +49,7 @@ export default function CarDetailPage({ params }: { params: { id: string } }) {
   if (!car) {
     return (
       <main className="flex min-h-screen flex-col items-center justify-center md:justify-center p-10">
-        <Navigation setIsOpen={setIsOpen} />
+       <Navigation isOpen={isOpen} setIsOpen={setIsOpen} />
         <div className="flex flex-col items-center justify-center">
           <h1 className="text-2xl font-bold mb-4">Car Not Found</h1>
           <p className="text-secondary-text-black">The car you are looking for does not exist.</p>
@@ -60,7 +60,7 @@ export default function CarDetailPage({ params }: { params: { id: string } }) {
 
   return (
     <main className="flex min-h-screen flex-col items-center p-10">
-      <Navigation setIsOpen={setIsOpen} />
+      <Navigation isOpen={isOpen} setIsOpen={setIsOpen} />
       
       <div className="flex flex-col-reverse md:flex-row gap-8 w-full max-w-4xl mt-8">
       {/* Left Column - Scrollable */}

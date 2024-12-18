@@ -9,10 +9,52 @@ export default function ProcijeniVrijednost() {
   // State to control the navigation menu
   // not needed right now
   const [isOpen, setIsOpen] = useState(false);
+  const [inputValue, setInputValue] = useState('');
+  const [error, setError] = useState('');
+  const [isInputFocused, setIsInputFocused] = useState(false);
+
+  // Validation function for input URL
+  const validateInput = (value: string) => {
+    if (!value.startsWith('https://www.njuskalo.hr/auti/')) {
+      setError('Uneseni link ne izgleda kao oglas automobila!');
+    } else {
+      setError('');
+    }
+  };
+
+  // Add URL formatting function
+  const formatUrl = (url: string) => {
+    if (!isInputFocused && url.includes('auti/')) {
+      const startIndex = url.indexOf('auti/');
+      const endIndex = url.indexOf('-oglas');
+      const extractedText = endIndex !== -1 
+        ? url.substring(startIndex + 5, endIndex)
+        : url.substring(startIndex + 5);
+      return extractedText.replace(/-/g, ' ');
+    }
+    return url;
+  };
+
+  // Handle input change
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    setInputValue(value);
+    validateInput(value);
+  };
+
+  // Handle button click
+  const handleButtonClick = () => {
+    if (error === '' && inputValue !== '') {
+      // Proceed with valid URL
+      console.log('Valid URL:', inputValue);
+      // Add your submission logic here
+    }
+  };
+  
 
   return (
     <main className="flex min-h-screen flex-col items-center justify-center md:justify-center p-10">
-      <Navigation setIsOpen={setIsOpen} />
+      <Navigation isOpen={isOpen} setIsOpen={setIsOpen} />
 
       {/*Elements above input*/}
       <div className="mb-4 text-center w-full max-w-xl">
@@ -25,29 +67,44 @@ export default function ProcijeniVrijednost() {
         </p>
       </div>
 
-      {/*Input*/}
+      {/* Input and Button Container */}
       <div className={`mb-1 fixed bottom-2 max-w-lg md:relative md:bottom-0 md:max-w-2xl w-11/12 `}>
-        <input
-          className="shadow-sm appearance-none border rounded-full w-full py-4 px-6 text-main-text-black leading-tight focus:outline-none focus:shadow-outline placeholder-secondary-text-black"
-          id="entry"
-          type="text"
-          placeholder="Zalijepi link"
-        />
-        <button
-          className="absolute right-3 top-1/2 transform -translate-y-1/2 bg-brand hover:bg-brand-light hover:text-main-text-black text-white font-bold p-3 rounded-full focus:outline-none focus:shadow-outline flex items-center justify-center"
-          type="button"
-        >
-          <svg
-            className="w-4 h-4 transform rotate-[-90deg]"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 12h14M12 5l7 7-7 7"></path>
-          </svg>
-        </button>
-      </div> 
+          <div className="relative">
+          <input
+            className={`shadow-sm appearance-none border rounded-full w-full py-4 px-6 leading-tight focus:outline-none focus:shadow-outline placeholder-secondary-text-black ${
+              isInputFocused ? 'text-main-text-black' : 'text-brand'
+            }`}
+            id="entry"
+            type="text"
+            placeholder="Zalijepi link"
+            value={isInputFocused ? inputValue : formatUrl(inputValue)}
+            onChange={handleInputChange}
+            onFocus={() => setIsInputFocused(true)}
+            onBlur={() => setIsInputFocused(false)}
+          />
+            <button
+              className="absolute right-3 top-1/2 transform -translate-y-1/2 bg-brand hover:bg-brand-light hover:text-main-text-black text-white font-bold p-3 rounded-full focus:outline-none focus:shadow-outline flex items-center justify-center"
+              type="button"
+              onClick={handleButtonClick}
+            >
+              <svg
+                className="w-4 h-4 transform rotate-[-90deg]"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 12h14M12 5l7 7-7 7"></path>
+              </svg>
+            </button>
+          </div>
+          {error && (
+            <p className="mt-2 text-center text-red-500 text-sm mx-auto">
+              {error}
+            </p>
+          )}
+        </div>
+
 
       <button className="md:mt-3 py-3 px-4 bg-brand-light text-main-text-black rounded-full text-sm hover:bg-brand hover:text-white">
         Manualni unos

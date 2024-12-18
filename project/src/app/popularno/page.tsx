@@ -3,7 +3,6 @@
 "use client";
 
 import { getPopularCars } from '@/lib/carData';
-import type { PopularCar } from '@/types/car';
 import { useState } from "react";
 import { Navigation } from "@/components/navigation";
 import { CarCard } from "@/components/carCard";
@@ -22,7 +21,7 @@ export default function PopularnoPage() {
         imageUrl={car.imageUrl}
         name={`${car.brand} ${car.model} ${car.model_type}`}
         price={`€ ${car.price.toLocaleString()}`}
-        rating={91}
+        //rating={91}
         brand={car.brand}
       />
     ));
@@ -35,7 +34,7 @@ export default function PopularnoPage() {
 
   return (
     <main className="flex min-h-screen flex-col items-center justify-start pt-20 sm:pt-24 bg-background">
-      <Navigation setIsOpen={setIsOpen} />
+      <Navigation isOpen={isOpen} setIsOpen={setIsOpen} />
 
       {/* Title and Description */}
       <div className="text-center">
