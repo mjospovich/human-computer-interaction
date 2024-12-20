@@ -24,13 +24,15 @@ export default function ProcijeniVrijednost() {
 
   // Add URL formatting function
   const formatUrl = (url: string) => {
-    if (!isInputFocused && url.includes('auti/')) {
+    if (!isInputFocused && url.startsWith('https://www.njuskalo.hr/auti/')) {
       const startIndex = url.indexOf('auti/');
       const endIndex = url.indexOf('-oglas');
       const extractedText = endIndex !== -1 
         ? url.substring(startIndex + 5, endIndex)
         : url.substring(startIndex + 5);
-      return extractedText.replace(/-/g, ' ');
+      const words = extractedText.split('-').slice(0, 5);
+      const formattedWords = words.map(word => word.charAt(0).toUpperCase() + word.slice(1));
+      return formattedWords.join(' ');
     }
     return url;
   };
@@ -71,17 +73,28 @@ export default function ProcijeniVrijednost() {
       <div className={`mb-1 fixed bottom-2 max-w-lg md:relative md:bottom-0 md:max-w-2xl w-11/12 `}>
           <div className="relative">
           <input
-            className={`shadow-sm appearance-none border rounded-full w-full py-4 px-6 leading-tight focus:outline-none focus:shadow-outline placeholder-secondary-text-black ${
-              isInputFocused ? 'text-main-text-black' : 'text-brand'
-            }`}
+            className={`shadow-sm appearance-none border rounded-full w-full py-4 pr-16 pl-10 leading-tight focus:outline-none focus:shadow-outline placeholder-secondary-text-black ${
+              error ? 'border-red-500' : 'border-gray-300'
+            } ${!error && inputValue ? 'font-semibold' : ''}`}
             id="entry"
             type="text"
             placeholder="Zalijepi link"
-            value={isInputFocused ? inputValue : formatUrl(inputValue)}
+            value={isInputFocused || error ? inputValue : formatUrl(inputValue)}
             onChange={handleInputChange}
             onFocus={() => setIsInputFocused(true)}
             onBlur={() => setIsInputFocused(false)}
           />
+          {!error && inputValue && (
+            <svg
+              className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-green-500"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
+            </svg>
+          )}
             <button
               className="absolute right-3 top-1/2 transform -translate-y-1/2 bg-brand hover:bg-brand-light hover:text-main-text-black text-white font-bold p-3 rounded-full focus:outline-none focus:shadow-outline flex items-center justify-center"
               type="button"
