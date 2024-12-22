@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import { getBrandLogo } from '@/data/brandLogos';
+import { useState } from 'react';
 
 type CarCardProps = {
   id: string;
@@ -40,7 +41,7 @@ const getTextClass = (text: string) => {
 export function CarCard({ id, imageUrl, name, price, brand }: CarCardProps) {
   const displayName = truncateText(name);
   const logoPath = getBrandLogo(brand);
-
+  const [imageError, setImageError] = useState(false);
 
   return (
     <Link href={`/cars/${id}`} passHref>
@@ -49,12 +50,13 @@ export function CarCard({ id, imageUrl, name, price, brand }: CarCardProps) {
         {/*Image*/}
         <div className="relative h-3/4">
           <Image
-            src={imageUrl}
+            src={imageError ? '/images/default-car.jpg' : imageUrl}
             alt={name}
             fill
             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
             className="object-cover transition-opacity duration-300 group-hover:opacity-10 group-hover:blur-sm"
             priority
+            onError={() => setImageError(true)}
           />
           {/* Image Hover Overlay Text */}
           <div className="absolute inset-0 flex items-center justify-center opacity-0 transition-opacity duration-800 group-hover:opacity-100">

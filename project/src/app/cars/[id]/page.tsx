@@ -36,6 +36,7 @@ export default function CarDetailPage({ params }: { params: { id: string } }) {
   const [isOpen, setIsOpen] = useState(false);
   const { id } = params;
   const [car, setCar] = useState<CarDetail | null>(null);
+  const [imageError, setImageError] = useState(false);
 
   useEffect(() => {
     const fetchedCar = Object.values(carsData).find(car => car.id === id);
@@ -69,13 +70,14 @@ export default function CarDetailPage({ params }: { params: { id: string } }) {
           {/* Image Container */}
           <div className="w-full relative rounded-lg overflow-hidden">
             <Image 
-              src={car.img} 
+              src={imageError ? '/images/default-car.jpg' : car.img}
               alt={car.title}
               width={896}  // 2/3 of max-w-4xl (1536px)
               height={0}   // Auto height
               className="object-contain w-full h-auto"
               sizes="(max-width: 768px) 100vw, 66vw"
               priority
+              onError={() => setImageError(true)}
             />
           </div>
           

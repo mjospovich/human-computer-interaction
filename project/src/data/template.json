@@ -1203,5 +1203,98 @@
         "service_book": true,
         "video_call_available": false,
         "garage_kept": false
+    },
+    "15": {
+        "id": "443081e9",
+        "img": "https://www.njuskalo.hr/image-w920x690/auti/fake.jpg",
+        "title": "Alfa Romeo Stelvio 2,2 D 190ks automatik, bixenon, navi, PDV",
+        "price": 22000.0,
+        "year": 2018,
+        "mileage": 104800,
+        "engine_power": 140,
+        "fuel_type": "Diesel",
+        "transmission": "Automatski",
+        "location": "Varaždinska, Varaždin, Banfica",
+        "description": "Opis oglasa\n    \n        Prva reg. 12/2018, dizel 2.2 140kw/190ks redizajn motor, automatik 8 stupnjeva ZF, pogon na stražnje kotače RWD, 104.800 prijeđenih kilometara - garantirano\n\nVozilo na skladištu u Varaždinu, spremno za isporuku.\n\nCijena do registracije, ne plaća se upravna pristojba (prijenos).\nVozilo u sustavu PDV-a, PDV je uključen u iskazanu cijenu, moguć odbitak pretporeza za pravne osobe.\nMoguće plaćanje putem leasinga, tvrtka Dran ne posreduje u ishođenju financiranja, kupac leasing ugovara sam po izboru.\n\nStelvio je unos iz Italije, povrat leasinga, 1 vlasnik, uredan i očuvan automobil, digitalna servisna knjiga, 2 ključa.\nBroj šasije: ZARPAGLX1K7C43526\nMogući pregledi u servisima\n\nDOSTUPNO Auto jamstvo u trajanju 12 mjeseci od datuma isporuke, u suradnji s našim partnerom Motive Service, prošireni paket Intensa.\nNa vozilu su zimske gume.\n\nBusiness paket opreme:\n- izvana metalik tamno plava boja, 17\" alu naplatci, bi-xenon prednji farovi s uređajem za pranje, led dnevna svjetla, stražnja led svjetla, parkirni senzori straga, el. sklopivi grijani retrovizori, električni poklopac prtljažnika\n- interijer u tkanini, sportski kožni volan, adaptivni tempomat sa funkcijom kočenja, DNA modovi rada motora, volana, ovjesa, multimedijski uređaj s navigacijom (karte Europe), DAB radio, USB i Aux priključci, bluetooth handsfree povezivost s mobilnim uređajima, audio streaming, automatska dvozonska klima, središnji naslon za ruku s pretincem (hlađeni) djeljiva stražnja klupa, naslon za ruku straga s držačima čaša, dvostruko dno prtljažnika\n- sigurnosni sustavi uz standarne ABS, ESP, TC, Airbagove prednje, bočne, za koljena i zračne zavjese, uključuju još senzore za kišu i svjetlo, automatika za duga svjetla, isofix za dječje sjedalice, nadzor pritiska u pneumaticima, alarm uređaj, upozorenje za nalet na vozilo ispred, upozorenje za napuštanje voznog traka",
+        "registration_until": null,
+        "features": {
+            "Mogućnost plaćanja": [
+                "gotovina",
+                "leasing"
+            ],
+            "Dodatni podaci": [
+                "Oblik karoserije: terensko vozilo / SUV / pick up",
+                "Broj vrata: 5",
+                "Broj sjedala: 5",
+                "Boja: tamno plava",
+                "Metalik boja: Metalik",
+                "Vrsta pogona: stražnji",
+                "Ovjes: sportski",
+                "Veličina guma: Širina: 235, Visina: 65, Promjer: 17"
+            ],
+            "Dodatna oprema vozila": [
+                "aluminijski naplatci",
+                "športsko podvozje",
+                "3. stop svjetlo",
+                "prednja svjetla za maglu",
+                "nadzor pritiska u pneumaticima",
+                "ksenonska svjetla",
+                "bi-ksenonska svjetla",
+                "navigacija",
+                "putno računalo",
+                "upravljač presvučen kožom",
+                "LED svjetla",
+                "senzor za svjetlo",
+                "senzor za kišu",
+                "Start-stop sistem"
+            ],
+            "Sigurnost": [
+                "ABS",
+                "ESP",
+                "ASR",
+                "isofix (sustav vezanja sjedalice za dijete)",
+                "tempomat s funkcijom kočenja",
+                "sustav upozorenja na napuštanje prometne trake",
+                "zaštita od stražnjeg naleta vozila",
+                "adaptivni tempomat",
+                "Zračni jastuci: vozački + suvozački + bočni"
+            ],
+            "Udobnost": [
+                "djeljiva stražnja klupa",
+                "priprema za mobilni aparat",
+                "handsfree",
+                "el. podešavanje ogledala",
+                "el. sklapanje ogledala",
+                "el. podizanje prednjih stakala",
+                "el. podizanje stražnjih stakala",
+                "upravljač podesiv po visini",
+                "servo upravljač",
+                "grijanje ogledala",
+                "parkirni senzori",
+                "tempomat",
+                "središnji naslon za ruku",
+                "komande na upravljaču",
+                "Klimatizacija: dvojna",
+                "Autoradio: autoradio/CD/mp3"
+            ],
+            "Sigurnost protiv krađe": [
+                "alarm",
+                "blokada motora",
+                "centralno zaključavanje s daljinskim"
+            ]
+        },
+        "brand": "fake",
+        "model": "Stelvio",
+        "model_type": "2,2 D",
+        "model_year": "2019.",
+        "in_traffic_from": "2018.",
+        "engine_displacement": "2.143 cm3",
+        "fuel_consumption": "6.5 l/100km",
+        "co2_emission": "139 g/km",
+        "eco_category": "Euro 6",
+        "condition": "rabljeno",
+        "service_book": true,
+        "video_call_available": false,
+        "garage_kept": false
     }
 }
