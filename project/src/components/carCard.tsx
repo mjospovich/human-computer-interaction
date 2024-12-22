@@ -45,7 +45,7 @@ export function CarCard({ id, imageUrl, name, price, brand }: CarCardProps) {
 
   return (
     <Link href={`/cars/${id}`} passHref>
-      <div className="w-full sm-grid:w-56 h-56 mx-auto bg-container-white shadow-md rounded-xl overflow-hidden flex flex-col cursor-pointer hover:shadow-lg transition-shadow duration-300 group">
+      <div className="w-full md-grid:max-w-full h-56 mx-auto bg-container-white shadow-md rounded-xl overflow-hidden flex flex-col cursor-pointer hover:shadow-lg transition-shadow duration-300 group">
 
         {/*Image*/}
         <div className="relative h-3/4">

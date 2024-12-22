@@ -26,8 +26,8 @@ const config: Config = {
       },
       screens: {
         'sm-grid': '444px',
-        'md-grid': '778px',
-        'lg-grid': '1106px',
+        'md-grid': '600px',
+        'lg-grid': '900px',
       },
     },
   },

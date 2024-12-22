@@ -9,7 +9,7 @@ import { CarCard } from "@/components/carCard";
 
 export default function PopularnoPage() {
   const [isOpen, setIsOpen] = useState(false);
-  const [visibleCards, setVisibleCards] = useState(6);
+  const [visibleCards, setVisibleCards] = useState(9);
   const cars = getPopularCars();
 
   // Function to generate CarCard components
@@ -29,7 +29,7 @@ export default function PopularnoPage() {
 
   // Function to load more cards
   const loadMoreCards = () => {
-    setVisibleCards(visibleCards + 6);
+    setVisibleCards(visibleCards + 9);
   };
 
   return (
@@ -49,7 +49,7 @@ export default function PopularnoPage() {
 
 
       {/* Grid Container */}
-      <div className={`mb-6 w-2/3 mx-auto max-w-2xl grid grid-cols-1 md-grid:grid-cols-2 lg-grid:grid-cols-3 gap-4 md-grid:gap-4 lg-grid:gap- mt-8`}>
+      <div className={`mb-6 w-full max-w-80 md-grid:w-auto md-grid:max-w-xl mx-auto lg-grid:max-w-4xl grid grid-cols-1 md-grid:grid-cols-2 lg-grid:grid-cols-3 gap-4 md-grid:gap-4 lg-grid:gap-4 mt-8`}>
         {renderCarCards(visibleCards)}
       </div>
 
