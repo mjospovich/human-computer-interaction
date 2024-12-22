@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import Image from 'next/image';
 import carsData from '@/data/template.json';
 import { Navigation } from "@/components/navigation";
+import { getBrandLogo } from '@/data/brandLogos';
 
 type CarDetail = {
   id: string;
@@ -103,11 +104,23 @@ export default function CarDetailPage({ params }: { params: { id: string } }) {
         {/* Right Column - Fixed */}
         <div className="w-full md:w-1/3">
           <div className="sticky top-12 bg-container-white p-6 rounded-lg shadow space-y-4">
-            {/* Title Section */}
+            {/* Title Section with Logo */}
             <div className="space-y-2">
-              <h1 className="text-xl font-bold text-main-text-black">
-                {`${car.brand} ${car.model} ${car.model_type}`}
-              </h1>
+              <div className="flex items-center gap-3">
+                <Image
+                  src={getBrandLogo(car.brand)}
+                  alt={`${car.brand} logo`}
+                  width={26}
+                  height={26}
+                  className="object-contain"
+                />
+                <h1 className="text-xl font-bold text-main-text-black">
+                  {car.brand}
+                </h1>
+              </div>
+              <h3 className="text-lg  text-main-text-black">
+                {`${car.model} ${car.model_type}`}
+              </h3>
             </div>
   
             {/* Price Section */}

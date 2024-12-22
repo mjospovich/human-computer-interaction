@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import Image from 'next/image';
-import { brandLogos } from '@/data/brandLogos';
+import { getBrandLogo } from '@/data/brandLogos';
 
 type CarCardProps = {
   id: string;
@@ -39,7 +39,7 @@ const getTextClass = (text: string) => {
 
 export function CarCard({ id, imageUrl, name, price, brand }: CarCardProps) {
   const displayName = truncateText(name);
-  const logoPath = brandLogos[brand];
+  const logoPath = getBrandLogo(brand);
 
 
   return (

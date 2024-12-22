@@ -6,6 +6,7 @@ interface BrandLogosMap {
 }
 
 export const brandLogos: BrandLogosMap = {
+  "Default": "/logos/KupujemAutoDefoult.svg",
   "Abarth": "/logos/abarth.svg",
   "Acura": "/logos/acura.svg",
   "Alfa Romeo": "/logos/alfa-romeo.svg",
@@ -69,4 +70,9 @@ export const brandLogos: BrandLogosMap = {
   "Volkswagen": "/logos/volkswagen.svg",
   "Volvo": "/logos/volvo.svg",
   "Yugo": "/logos/yugo.svg"
+};
+
+// Add a function to get logo with fallback
+export const getBrandLogo = (brand: string): string => {
+  return brandLogos[brand] || brandLogos["Default"];
 };
