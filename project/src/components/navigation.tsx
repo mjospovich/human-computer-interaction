@@ -14,7 +14,7 @@ const pages: Page[] = [
   { title: "Procijeni vrijednost ", path: "/" },
   { title: "Popularno", path: "/popularno" },
   { title: "Podrška", path: "/podrska" },
-  { title: "O nama", path: "/onama" },
+  //{ title: "O nama", path: "/onama" },
   { title: "Prijavi se", path: "/prijavise" },
 ];
 
