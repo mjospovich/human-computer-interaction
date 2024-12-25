@@ -5,6 +5,7 @@ import Image from 'next/image';
 import carsData from '@/data/template.json';
 import { Navigation } from "@/components/navigation";
 import { getBrandLogo } from '@/data/brandLogos';
+import { Rating } from "@/components/rating";
 
 type CarDetail = {
   id: string;
@@ -105,7 +106,7 @@ export default function CarDetailPage({ params }: { params: { id: string } }) {
   
         {/* Right Column - Fixed */}
         <div className="w-full md:w-1/3">
-          <div className="sticky top-12 bg-container-white p-6 rounded-lg shadow space-y-4">
+          <div className="sticky top-12 bg-container-white p-4 rounded-lg shadow space-y-4">
             {/* Title Section with Logo */}
             <div className="space-y-2">
               <div className="flex items-center gap-3">
@@ -130,9 +131,10 @@ export default function CarDetailPage({ params }: { params: { id: string } }) {
               <p className="text-4xl font-bold text-main-text-black">€ {car.price.toLocaleString()}</p>
             </div>
   
-            {/* Rating Placeholder */}
-            <div className="mt-4 p-4 bg-gray-100 rounded">
-              <p className="text-gray-600">Rating Placeholder</p>
+            {/* Rating Section - Replace the placeholder */}
+            <div className="flex items-center justify-between">
+              <span className="text-secondary-text-black">Ocijena vrijednosti:</span>
+              <Rating value={42} size="md" />
             </div>
   
             {/* Link Placeholder */}
