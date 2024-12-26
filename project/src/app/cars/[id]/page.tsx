@@ -49,7 +49,14 @@ export default function CarDetailPage({ params }: { params: { id: string } }) {
     } else {
       setCar(null);
     }
-    setIsLoading(false);
+    
+    // Add minimum loading time of 500ms
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+    }, 500);
+
+    // Cleanup timeout if component unmounts
+    return () => clearTimeout(timer);
   }, [id]);
 
   // Loading state
@@ -151,9 +158,19 @@ export default function CarDetailPage({ params }: { params: { id: string } }) {
               <Rating value={42} size="md" />
             </div>
   
-            {/* Link Placeholder */}
-            <div className="mt-4 p-4 bg-gray-100 rounded">
-              <p className="text-gray-600">Link Placeholder</p>
+            {/* Replace Link Placeholder with actual link */}
+            <div className="mt-4  bg-gray-50 rounded">
+              <p className="text-secondary-text-black">
+                {' '}
+                <a 
+                  href="https://www.njuskalo.hr/auti" 
+                  target="_blank" 
+                  rel="noopener noreferrer" 
+                  className="text-secondary-text-black hover:underline transition-colors duration-300"
+                >
+                  Pogledaj oglas na - Njuškalo
+                </a>
+              </p>
             </div>
           </div>
         </div>
