@@ -6,6 +6,7 @@ import carsData from '@/data/template.json';
 import { Navigation } from "@/components/navigation";
 import { getBrandLogo } from '@/data/brandLogos';
 import { Rating } from "@/components/rating";
+import { LoadingWheel } from "@/components/loadingWheel";
 
 type CarDetail = {
   id: string;
@@ -38,6 +39,7 @@ export default function CarDetailPage({ params }: { params: { id: string } }) {
   const { id } = params;
   const [car, setCar] = useState<CarDetail | null>(null);
   const [imageError, setImageError] = useState(false);
+  const [isLoading, setIsLoading] = useState(true); // Add loading state
 
   useEffect(() => {
     const fetchedCar = Object.values(carsData).find(car => car.id === id);
@@ -47,15 +49,27 @@ export default function CarDetailPage({ params }: { params: { id: string } }) {
     } else {
       setCar(null);
     }
+    setIsLoading(false);
   }, [id]);
 
+  // Loading state
+  if (isLoading) {
+    return (
+      <main className="flex min-h-screen flex-col items-center justify-center md:justify-center p-10">
+        <Navigation isOpen={isOpen} setIsOpen={setIsOpen} />
+        <LoadingWheel size="md" message="Analiza auta u tijeku..." />
+      </main>
+    );
+  }
+
+  // Not found state
   if (!car) {
     return (
       <main className="flex min-h-screen flex-col items-center justify-center md:justify-center p-10">
-       <Navigation isOpen={isOpen} setIsOpen={setIsOpen} />
+        <Navigation isOpen={isOpen} setIsOpen={setIsOpen} />
         <div className="flex flex-col items-center justify-center">
-          <h1 className="text-2xl font-bold mb-4">Car Not Found</h1>
-          <p className="text-secondary-text-black">The car you are looking for does not exist.</p>
+          <h1 className="text-2xl font-bold mb-4">Auto Nije Pronađen</h1>
+          <p className="text-secondary-text-black">Traženi oglas ne postoji.</p>
         </div>
       </main>
     );
