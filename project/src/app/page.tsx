@@ -114,10 +114,11 @@ export default function ProcijeniVrijednost() {
           )}
         </div>
 
-
-      <button className="md:mt-3 py-3 px-4 bg-brand-light text-main-text-black rounded-full text-sm hover:bg-brand hover:text-white">
-        Manualni unos
-      </button>
+      <Link href="/manualni-unos">
+        <button className="md:mt-3 py-3 px-4 bg-brand-light text-main-text-black rounded-full text-sm hover:bg-brand hover:text-white">
+          Manualni unos
+        </button>
+      </Link>
 
       <p className="mt-3 text-xs text-secondary-text-black text-center">
         <Link href="/popularno" legacyBehavior>

@@ -155,7 +155,7 @@ export default function CarDetailPage({ params }: { params: { id: string } }) {
             {/* Rating Section - Replace the placeholder */}
             <div className="flex items-center justify-between">
               <span className="text-secondary-text-black">Ocijena vrijednosti:</span>
-              <Rating value={42} size="md" />
+              <Rating value={23} size="md" />
             </div>
   
             {/* Replace Link Placeholder with actual link */}
