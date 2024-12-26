@@ -3,21 +3,18 @@ interface FormButtonGroupProps {
   options: string[];
   value: string;
   onChange: (value: string) => void;
-  required?: boolean;
 }
 
 export function FormButtonGroup({ 
   label, 
   options, 
   value, 
-  onChange, 
-  required = false 
+  onChange
 }: FormButtonGroupProps) {
   return (
     <div className="w-full mb-4">
       <label className="block text-sm font-medium text-main-text-black mb-2">
         {label}
-        {required && <span className="text-red-500 ml-1">*</span>}
       </label>
       <div className="flex gap-2 w-full">
         {options.map((option) => (

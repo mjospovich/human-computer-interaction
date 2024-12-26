@@ -11,7 +11,13 @@ export default function ManualniUnosPage() {
     brand: '',
     model: '',
     type: '',
-    doors: ''  // Add new state for doors
+    doors: '',
+    firstRegistration: '',
+    fuelType: '',
+    bodyType: '',
+    transmission: '',
+    enginePower: '',
+    mileage: ''
   });
 
   const handleChange = (field: string) => (value: string) => {
@@ -27,7 +33,8 @@ export default function ManualniUnosPage() {
           Manualni Unos Podataka
         </h1>
         
-        <div className="bg-container-white p-6 rounded-lg shadow">
+        <div className="bg-container-white p-6 rounded-2xl shadow">
+          {/* Basic car info */}
           <FormInput
             label="Marka Automobila"
             value={formData.brand}
@@ -52,11 +59,67 @@ export default function ManualniUnosPage() {
             required
           />
 
+          {/* Car specifications */}
           <FormButtonGroup
             label="Broj Vrata"
             options={['3', '4', '5', '7']}
             value={formData.doors}
             onChange={handleChange('doors')}
+          />
+
+          <FormInput
+            label="Prva Godina Registracije"
+            value={formData.firstRegistration}
+            onChange={handleChange('firstRegistration')}
+            type="number"
+            placeholder="npr. 2018"
+            required
+          />
+
+          <FormButtonGroup
+            label="Vrsta Goriva"
+            options={['Benzin', 'Dizel', 'Hibrid', 'Električni']}
+            value={formData.fuelType}
+            onChange={handleChange('fuelType')}
+          />
+
+          <FormInput
+            label="Vrsta Konstrukcije"
+            value={formData.bodyType}
+            onChange={handleChange('bodyType')}
+            type="select"
+            options={[
+              'Limuzina',
+              'Karavan',
+              'SUV',
+              'Coupe',
+              'Cabriolet',
+              'Hatchback',
+              'MPV'
+            ]}
+            required
+          />
+
+          <FormButtonGroup
+            label="Vrsta Mijenjača"
+            options={['Automatski', 'Manualni', 'Polu-automatski']}
+            value={formData.transmission}
+            onChange={handleChange('transmission')}
+          />
+
+          <FormInput
+            label="Snaga Motora (kW)"
+            value={formData.enginePower}
+            onChange={handleChange('enginePower')}
+            placeholder="npr. 140"
+            required
+          />
+
+          <FormInput
+            label="Kilometraža"
+            value={formData.mileage}
+            onChange={handleChange('mileage')}
+            placeholder="npr. 150000"
             required
           />
         </div>

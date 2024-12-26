@@ -60,16 +60,7 @@ export default function ProcijeniVrijednost() {
       <div className="mb-4 text-center w-full max-w-xl">
         <ListingToScoreImg className="mb-3 md:mb-0 mx-auto w-2/3 md:w-1/2" />
         <p className="text-secondary-text-black text-left mb-2 text-sm">
-          1. Kopiraj link oglasa automobila s jednog od podržanih oglasnika (
-            <a 
-              href="https://www.njuskalo.hr/auti" 
-              target="_blank" 
-              rel="noopener noreferrer" 
-              className="hover:underline transition-colors duration-300"
-            >
-              Njuškalo
-            </a>
-            ).
+          1. Kopiraj link oglasa automobila s jednog od podržanih oglasnika (Njuškalo).
         </p>
         <p className="text-secondary-text-black text-left text-sm">
           2. Zalijepi link u polje ili manunalno unesi podatke za procjenu vrijednosti automobila.
@@ -114,11 +105,10 @@ export default function ProcijeniVrijednost() {
           )}
         </div>
 
-      <Link href="/manualni-unos">
-        <button className="md:mt-3 py-3 px-4 bg-brand-light text-main-text-black rounded-full text-sm hover:bg-brand hover:text-white">
-          Manualni unos
-        </button>
-      </Link>
+
+      <button className="md:mt-3 py-3 px-4 bg-brand-light text-main-text-black rounded-full text-sm hover:bg-brand hover:text-white">
+        Manualni unos
+      </button>
 
       <p className="mt-3 text-xs text-secondary-text-black text-center">
         <Link href="/popularno" legacyBehavior>
