@@ -29,10 +29,16 @@ export default function ManualniUnosPage() {
       <Navigation isOpen={isOpen} setIsOpen={setIsOpen} />
       
       <div className="w-full max-w-2xl mt-8">
-        <h1 className="text-2xl font-bold text-main-text-black mb-6">
-          Manualni Unos Podataka
-        </h1>
-        
+        {/* Updated header section */}
+        <div className="text-center mb-8">
+          <h1 className="text-2xl md:text-3xl font-bold text-main-text-black mb-3">
+            Procjeni svoj automobil!
+          </h1>
+          <p className="text-secondary-text-black text-sm md:text-base max-w-lg mx-auto">
+            Manualno unesi podatke o svom automobilu kako bi dobio procjenjenu vrijednost svog automobila!
+          </p>
+        </div>
+
         <div className="bg-container-white p-6 rounded-2xl shadow">
           {/* Basic car info */}
           <FormInput
