@@ -19,9 +19,34 @@ export default function ManualniUnosPage() {
     enginePower: '',
     mileage: ''
   });
+  const [errors, setErrors] = useState<Record<string, boolean>>({});
+  const [showErrors, setShowErrors] = useState(false);
 
   const handleChange = (field: string) => (value: string) => {
     setFormData(prev => ({ ...prev, [field]: value }));
+  };
+
+  const validateForm = () => {
+    const newErrors: Record<string, boolean> = {};
+    let hasErrors = false;
+
+    Object.entries(formData).forEach(([key, value]) => {
+      if (!value) {
+        newErrors[key] = true;
+        hasErrors = true;
+      }
+    });
+
+    setErrors(newErrors);
+    setShowErrors(true);
+    return !hasErrors;
+  };
+
+  const handleSubmit = () => {
+    if (validateForm()) {
+      console.log('All fields are filled');
+      // Add submission logic here
+    }
   };
 
   return (
@@ -46,7 +71,7 @@ export default function ManualniUnosPage() {
             value={formData.brand}
             onChange={handleChange('brand')}
             placeholder="npr. BMW"
-            required
+            error={showErrors && errors.brand ? "Polje je prazno!" : ""}
           />
           
           <FormInput
@@ -54,7 +79,7 @@ export default function ManualniUnosPage() {
             value={formData.model}
             onChange={handleChange('model')}
             placeholder="npr. Serija 3"
-            required
+            error={showErrors && errors.model ? "Polje je prazno!" : ""}
           />
           
           <FormInput
@@ -62,7 +87,7 @@ export default function ManualniUnosPage() {
             value={formData.type}
             onChange={handleChange('type')}
             placeholder="npr. 320d"
-            required
+            error={showErrors && errors.type ? "Polje je prazno!" : ""}
           />
 
           {/* Car specifications */}
@@ -71,6 +96,7 @@ export default function ManualniUnosPage() {
             options={['3', '4', '5', '7']}
             value={formData.doors}
             onChange={handleChange('doors')}
+            error={showErrors && errors.doors ? "Odaberi!" : ""}
           />
 
           <FormInput
@@ -79,7 +105,7 @@ export default function ManualniUnosPage() {
             onChange={handleChange('firstRegistration')}
             type="number"
             placeholder="npr. 2018"
-            required
+            error={showErrors && errors.firstRegistration ? "Polje je prazno!" : ""}
           />
 
           <FormButtonGroup
@@ -87,6 +113,7 @@ export default function ManualniUnosPage() {
             options={['Benzin', 'Dizel', 'Hibrid', 'Električni']}
             value={formData.fuelType}
             onChange={handleChange('fuelType')}
+            error={showErrors && errors.fuelType ? "Odaberi!" : ""}
           />
 
           <FormInput
@@ -103,7 +130,7 @@ export default function ManualniUnosPage() {
               'Hatchback',
               'MPV'
             ]}
-            required
+            error={showErrors && errors.bodyType ? "Polje je prazno!" : ""}
           />
 
           <FormButtonGroup
@@ -111,6 +138,7 @@ export default function ManualniUnosPage() {
             options={['Automatski', 'Manualni', 'Polu-automatski']}
             value={formData.transmission}
             onChange={handleChange('transmission')}
+            error={showErrors && errors.transmission ? "Odaberi!" : ""}
           />
 
           <FormInput
@@ -118,7 +146,7 @@ export default function ManualniUnosPage() {
             value={formData.enginePower}
             onChange={handleChange('enginePower')}
             placeholder="npr. 140"
-            required
+            error={showErrors && errors.enginePower ? "Polje je prazno!" : ""}
           />
 
           <FormInput
@@ -126,8 +154,24 @@ export default function ManualniUnosPage() {
             value={formData.mileage}
             onChange={handleChange('mileage')}
             placeholder="npr. 150000"
-            required
+            error={showErrors && errors.mileage ? "Polje je prazno!" : ""}
           />
+
+          {/* Add submit button and error message at the bottom */}
+          <div className="mt-8 space-y-4 flex flex-col items-center">
+            <button
+              onClick={handleSubmit}
+              className="w-44 py-3 px-4 bg-brand text-white rounded-full text-sm hover:bg-brand-light hover:text-main-text-black transition-colors duration-300"
+            >
+              Procijeni vrijednost
+            </button>
+            
+            {showErrors && Object.keys(errors).length > 0 && (
+              <p className="text-red-500 text-sm text-center">
+                Sva polja nisu popunjena
+              </p>
+            )}
+          </div>
         </div>
       </div>
     </main>

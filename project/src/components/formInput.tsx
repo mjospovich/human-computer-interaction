@@ -6,6 +6,7 @@ interface FormInputProps {
   required?: boolean;
   type?: 'text' | 'number' | 'select';
   options?: string[];
+  error?: string;
 }
 
 export function FormInput({ 
@@ -15,13 +16,21 @@ export function FormInput({
   placeholder = '', 
   required = false,
   type = 'text',
-  options = []
+  options = [],
+  error = ''
 }: FormInputProps) {
   return (
     <div className="w-full mb-4">
-      <label className="block text-sm font-medium text-main-text-black mb-2">
-        {label}
-      </label>
+      <div className="flex justify-between items-center mb-2">
+        <label className="block text-sm font-medium text-main-text-black">
+          {label}
+        </label>
+        {error && (
+          <span className="text-sm text-red-500">
+            {error}
+          </span>
+        )}
+      </div>
       <div className="relative">
         {type === 'select' ? (
           <div className="relative">
