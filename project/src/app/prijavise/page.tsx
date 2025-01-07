@@ -3,10 +3,12 @@
 import { Navigation } from "@/components/navigation";
 import { useState, useEffect } from "react";
 import { supabase } from '@/lib/supabase';
+import { useRouter } from 'next/navigation';
 
 type FormType = 'login' | 'register';
 
 export default function PrijaviSePage() {
+  const router = useRouter();
   const [isOpen, setIsOpen] = useState(false);
   const [formType, setFormType] = useState<FormType>('login');
   const [formData, setFormData] = useState({
@@ -21,6 +23,8 @@ export default function PrijaviSePage() {
   });
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [authError, setAuthError] = useState('');
 
   const validatePassword = (password: string) => {
     if (password.length < 8) {
@@ -82,28 +86,66 @@ export default function PrijaviSePage() {
   // Update handleSubmit to use Supabase
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+    setIsLoading(true);
+    setAuthError('');
+
     try {
-      if (formType === 'login') {
+      if (formType === 'register') {
+        // Validate passwords match
+        if (formData.password !== formData.confirmPassword) {
+          setAuthError('Lozinke se ne podudaraju');
+          return;
+        }
+
+        // Register new user
+        const { data, error } = await supabase.auth.signUp({
+          email: formData.email,
+          password: formData.password,
+          options: {
+            emailRedirectTo: `${window.location.origin}/auth/callback`,
+          },
+        });
+
+        if (error) {
+          if (error.message.includes('already registered')) {
+            setAuthError('Email je već registriran');
+          } else {
+            setAuthError('Greška prilikom registracije');
+          }
+          console.error('Registration error:', error);
+          return;
+        }
+
+        if (data.user) {
+          // Show success message or redirect
+          router.push('/'); // or wherever you want to redirect after registration
+        }
+      } else {
+        // Handle login
         const { data, error } = await supabase.auth.signInWithPassword({
           email: formData.email,
           password: formData.password,
         });
-        
-        if (error) throw error;
-        console.log('Logged in:', data);
-        
-      } else {
-        const { data, error } = await supabase.auth.signUp({
-          email: formData.email,
-          password: formData.password,
-        });
-        
-        if (error) throw error;
-        console.log('Signed up:', data);
+
+        if (error) {
+          if (error.message.includes('Invalid login')) {
+            setAuthError('Pogrešan email ili lozinka');
+          } else {
+            setAuthError('Greška prilikom prijave');
+          }
+          console.error('Login error:', error);
+          return;
+        }
+
+        if (data.user) {
+          router.push('/'); // or wherever you want to redirect after login
+        }
       }
     } catch (error) {
       console.error('Auth error:', error);
+      setAuthError('Došlo je do greške. Pokušajte ponovno.');
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -114,6 +156,13 @@ export default function PrijaviSePage() {
       <div className="w-full max-w-md my-auto">
 
         <form onSubmit={handleSubmit} className="bg-white p-8 rounded-2xl shadow-sm space-y-4">
+          {/* Show auth error if any */}
+          {authError && (
+            <div className="p-3 rounded bg-red-50 text-red-500 text-sm text-center">
+              {authError}
+            </div>
+          )}
+          
           <div>
             <label className="block text-sm font-medium text-main-text-black mb-1">
               Email:
@@ -204,9 +253,12 @@ export default function PrijaviSePage() {
           <div className="flex flex-col items-center gap-3">
             <button
               type="submit"
-              className="w-36 py-3 px-4 bg-brand text-white rounded-full text-sm hover:bg-brand-light hover:text-main-text-black transition-colors duration-300"
+              disabled={isLoading}
+              className={`w-36 py-3 px-4 bg-brand text-white rounded-full text-sm hover:bg-brand-light hover:text-main-text-black transition-colors duration-300 ${
+                isLoading ? 'opacity-50 cursor-not-allowed' : ''
+              }`}
             >
-              {formType === 'login' ? 'Prijavi se' : 'Registriraj se'}
+              {isLoading ? 'Učitavanje...' : formType === 'login' ? 'Prijavi se' : 'Registriraj se'}
             </button>
 
             {/* Smaller form type switch text */}
