@@ -1,7 +1,8 @@
 "use client";
 
 import { Navigation } from "@/components/navigation";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { supabase } from '@/lib/supabase';
 
 type FormType = 'login' | 'register';
 
@@ -43,7 +44,7 @@ export default function PrijaviSePage() {
       if (field === 'password') {
         const passwordError = validatePassword(value);
         if (passwordError) {
-          setErrors(prev => ({ ...prev, password: passwordError }));
+          setErrors(prev => ({ ...prev, password: passwordError })); 
         }
         if (formData.confirmPassword && value !== formData.confirmPassword) {
           setErrors(prev => ({ ...prev, confirmPassword: "Lozinke se ne podudaraju" }));
@@ -54,10 +55,56 @@ export default function PrijaviSePage() {
     }
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  // Add Supabase connection test
+  const testSupabaseConnection = async () => {
+    try {
+      // Test auth - get session
+      const { data: { session }, error } = await supabase.auth.getSession();
+      
+      if (error) {
+        console.error('Supabase connection error:', error.message);
+        return;
+      }
+      
+      console.log('Supabase connected successfully!');
+      console.log('Session:', session);
+      
+    } catch (error) {
+      console.error('Error:', error);
+    }
+  };
+
+  // Test connection on component mount
+  useEffect(() => {
+    testSupabaseConnection();
+  }, []);
+
+  // Update handleSubmit to use Supabase
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Add your authentication logic here
-    console.log('Form submitted:', formData);
+    
+    try {
+      if (formType === 'login') {
+        const { data, error } = await supabase.auth.signInWithPassword({
+          email: formData.email,
+          password: formData.password,
+        });
+        
+        if (error) throw error;
+        console.log('Logged in:', data);
+        
+      } else {
+        const { data, error } = await supabase.auth.signUp({
+          email: formData.email,
+          password: formData.password,
+        });
+        
+        if (error) throw error;
+        console.log('Signed up:', data);
+      }
+    } catch (error) {
+      console.error('Auth error:', error);
+    }
   };
 
   return (
