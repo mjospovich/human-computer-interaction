@@ -118,7 +118,7 @@ export default function PrijaviSePage() {
 
         if (data.user) {
           // Show success message or redirect
-          router.push('/'); // or wherever you want to redirect after registration
+          router.push('/'); //redirect after registration
         }
       } else {
         // Handle login
@@ -138,7 +138,7 @@ export default function PrijaviSePage() {
         }
 
         if (data.user) {
-          router.push('/'); // or wherever you want to redirect after login
+          router.push('/'); // redirect after login
         }
       }
     } catch (error) {
@@ -149,46 +149,61 @@ export default function PrijaviSePage() {
     }
   };
 
+  const passwordInputStyle = `
+    input::-ms-reveal,
+    input::-ms-clear {
+      display: none;
+    }
+    input::-webkit-credentials-auto-fill-button {
+      visibility: hidden;
+      position: absolute;
+      right: 0;
+    }
+  `;
+
   return (
-    <main className="flex min-h-screen flex-col items-center p-10">
-      <Navigation isOpen={isOpen} setIsOpen={setIsOpen} />
-      
-      <div className="w-full max-w-md my-auto">
+    <>
+      <style jsx global>{passwordInputStyle}</style>
+      <main className="flex min-h-screen flex-col items-center p-10">
+        <Navigation isOpen={isOpen} setIsOpen={setIsOpen} />
+        
+        <div className="w-full max-w-md my-auto">
 
-        <form onSubmit={handleSubmit} className="bg-white p-8 rounded-2xl shadow-sm space-y-4">
-          {/* Show auth error if any */}
-          {authError && (
-            <div className="p-3 rounded bg-red-50 text-red-500 text-sm text-center">
-              {authError}
-            </div>
-          )}
-          
-          <div>
-            <label className="block text-sm font-medium text-main-text-black mb-1">
-              Email:
-            </label>
-            <input
-              type="email"
-              value={formData.email}
-              onChange={handleInputChange('email')}
-              className="w-full px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-brand focus:border-transparent"
-              required
-            />
-          </div>
-
-          <div>
-            <label className="block text-sm font-medium text-main-text-black mb-1">
-              Lozinka:
-            </label>
-            <div className="relative">
+          <form onSubmit={handleSubmit} className="bg-white p-8 rounded-2xl shadow-sm space-y-4">
+            {/* Show auth error if any */}
+            {authError && (
+              <div className="p-3 rounded bg-red-50 text-red-500 text-sm text-center">
+                {authError}
+              </div>
+            )}
+            
+            <div>
+              <label className="block text-sm font-medium text-main-text-black mb-1">
+                Email:
+              </label>
               <input
-                type={showPassword ? "text" : "password"}
-                value={formData.password}
-                onChange={handleInputChange('password')}
-                className="w-full px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-brand focus:border-transparent pr-10"
+                type="email"
+                value={formData.email}
+                onChange={handleInputChange('email')}
+                className="w-full px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-brand focus:border-transparent"
                 required
               />
-              {formData.password && (
+            </div>
+
+            {/* Password Input */}
+            <div>
+              <label className="block text-sm font-medium text-main-text-black mb-1">
+                Lozinka:
+              </label>
+              <div className="relative">
+                <input
+                  type={showPassword ? "text" : "password"}
+                  value={formData.password}
+                  onChange={handleInputChange('password')}
+                  className="w-full px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-brand focus:border-transparent pr-10"
+                  required
+                />
+                {/* Only one eye icon here */}
                 <button
                   type="button"
                   className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-700"
@@ -205,27 +220,27 @@ export default function PrijaviSePage() {
                     </svg>
                   )}
                 </button>
+              </div>
+              {errors.password && (
+                <p className="mt-1 text-sm text-red-500">{errors.password}</p>
               )}
             </div>
-            {errors.password && (
-              <p className="mt-1 text-sm text-red-500">{errors.password}</p>
-            )}
-          </div>
 
-          {formType === 'register' && (
-            <div>
-              <label className="block text-sm font-medium text-main-text-black mb-1">
-                Potvrdi Lozinku:
-              </label>
-              <div className="relative">
-                <input
-                  type={showConfirmPassword ? "text" : "password"}
-                  value={formData.confirmPassword}
-                  onChange={handleInputChange('confirmPassword')}
-                  className="w-full px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-brand focus:border-transparent pr-10"
-                  required
-                />
-                {formData.confirmPassword && (
+            {/* Remove the duplicate eye icon from the general input section */}
+            {formType === 'register' && (
+              <div>
+                <label className="block text-sm font-medium text-main-text-black mb-1">
+                  Potvrdi Lozinku:
+                </label>
+                <div className="relative">
+                  <input
+                    type={showConfirmPassword ? "text" : "password"}
+                    value={formData.confirmPassword}
+                    onChange={handleInputChange('confirmPassword')}
+                    className="w-full px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-brand focus:border-transparent pr-10"
+                    required
+                  />
+                  {/* Only one eye icon here */}
                   <button
                     type="button"
                     className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-700"
@@ -242,40 +257,39 @@ export default function PrijaviSePage() {
                       </svg>
                     )}
                   </button>
+                </div>
+                {errors.confirmPassword && (
+                  <p className="mt-1 text-sm text-red-500">{errors.confirmPassword}</p>
                 )}
               </div>
-              {errors.confirmPassword && (
-                <p className="mt-1 text-sm text-red-500">{errors.confirmPassword}</p>
-              )}
+            )}
+
+            <div className="flex flex-col items-center gap-3">
+              <button
+                type="submit"
+                disabled={isLoading}
+                className={`w-36 py-3 px-4 bg-brand text-white rounded-full text-sm hover:bg-brand-light hover:text-main-text-black transition-colors duration-300 ${
+                  isLoading ? 'opacity-50 cursor-not-allowed' : ''
+                }`}
+              >
+                {isLoading ? 'Učitavanje...' : formType === 'login' ? 'Prijavi se' : 'Registriraj se'}
+              </button>
+
+              <button
+                type="button"
+                onClick={() => setFormType(formType === 'login' ? 'register' : 'login')}
+                className="text-xs text-secondary-text-black hover:text-brand transition-colors duration-300"
+              >
+                {formType === 'login' ? (
+                  <span>Nemaš račun? <span className="font-semibold">Registriraj se</span></span>
+                ) : (
+                  <span>Već imaš račun? <span className="font-semibold">Prijavi se</span></span>
+                )}
+              </button>
             </div>
-          )}
-
-          <div className="flex flex-col items-center gap-3">
-            <button
-              type="submit"
-              disabled={isLoading}
-              className={`w-36 py-3 px-4 bg-brand text-white rounded-full text-sm hover:bg-brand-light hover:text-main-text-black transition-colors duration-300 ${
-                isLoading ? 'opacity-50 cursor-not-allowed' : ''
-              }`}
-            >
-              {isLoading ? 'Učitavanje...' : formType === 'login' ? 'Prijavi se' : 'Registriraj se'}
-            </button>
-
-            {/* Smaller form type switch text */}
-            <button
-              type="button"
-              onClick={() => setFormType(formType === 'login' ? 'register' : 'login')}
-              className="text-xs text-secondary-text-black hover:text-brand transition-colors duration-300"
-            >
-              {formType === 'login' ? (
-                <span>Nemaš račun? <span className="font-semibold">Registriraj se</span></span>
-              ) : (
-                <span>Već imaš račun? <span className="font-semibold">Prijavi se</span></span>
-              )}
-            </button>
-          </div>
-        </form>
-      </div>
-    </main>
+          </form>
+        </div>
+      </main>
+    </>
   );
 }
