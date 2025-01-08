@@ -1,9 +1,11 @@
 "use client";
 
 import Link from 'next/link';
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Navigation } from "@/components/navigation";
 import ListingToScoreImg from "@/assets/listingToScoreImg.svg";
+import { Toast } from "@/components/toast";
+import { useAuth } from "@/context/authContext";
 
 export default function ProcijeniVrijednost() {
   // State to control the navigation menu
@@ -12,6 +14,7 @@ export default function ProcijeniVrijednost() {
   const [inputValue, setInputValue] = useState('');
   const [error, setError] = useState('');
   const [isInputFocused, setIsInputFocused] = useState(false);
+  const { showLoginToast, setShowLoginToast } = useAuth();
 
   // Validation function for input URL
   const validateInput = (value: string) => {
@@ -50,10 +53,25 @@ export default function ProcijeniVrijednost() {
       // Add your submission logic here
     }
   };
-  
+
+  // Add useEffect for toast timeout
+  useEffect(() => {
+    if (showLoginToast) {
+      const timer = setTimeout(() => {
+        setShowLoginToast(false);
+      }, 3000);
+      return () => clearTimeout(timer);
+    }
+  }, [showLoginToast, setShowLoginToast]);
 
   return (
     <main className="flex min-h-screen flex-col items-center justify-center md:justify-center p-10">
+      {showLoginToast && (
+        <Toast 
+          message="Uspješno ste prijavljeni!" 
+          onClose={() => setShowLoginToast(false)} 
+        />
+      )}
       <Navigation isOpen={isOpen} setIsOpen={setIsOpen} />
 
       {/*Elements above input*/}

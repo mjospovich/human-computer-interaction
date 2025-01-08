@@ -4,6 +4,7 @@ import { Navigation } from "@/components/navigation";
 import { useState, useEffect } from "react";
 import { supabase } from '@/lib/supabase';
 import { useRouter } from 'next/navigation';
+import { LoadingWheel } from "@/components/loadingWheel";
 
 type FormType = 'login' | 'register';
 
@@ -59,22 +60,19 @@ export default function PrijaviSePage() {
     }
   };
 
-  // Add Supabase connection test
+  // Remove detailed session logging
   const testSupabaseConnection = async () => {
     try {
-      // Test auth - get session
       const { data: { session }, error } = await supabase.auth.getSession();
-      
       if (error) {
-        console.error('Supabase connection error:', error.message);
+        console.error('Authentication error occurred');
         return;
       }
-      
-      console.log('Supabase connected successfully!');
-      console.log('Session:', session);
-      
+      if (session) {
+        console.log('User is authenticated');
+      }
     } catch (error) {
-      console.error('Error:', error);
+      console.error('Connection error occurred');
     }
   };
 
@@ -83,11 +81,15 @@ export default function PrijaviSePage() {
     testSupabaseConnection();
   }, []);
 
-  // Update handleSubmit to use Supabase
+  // Update handleSubmit with minimal logging
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
     setAuthError('');
+
+    // Set start time
+    const startTime = Date.now();
+    const minLoadingTime = 800; // 800ms minimum loading time
 
     try {
       if (formType === 'register') {
@@ -97,7 +99,6 @@ export default function PrijaviSePage() {
           return;
         }
 
-        // Register new user
         const { data, error } = await supabase.auth.signUp({
           email: formData.email,
           password: formData.password,
@@ -112,16 +113,15 @@ export default function PrijaviSePage() {
           } else {
             setAuthError('Greška prilikom registracije');
           }
-          console.error('Registration error:', error);
+          console.error('Registration failed');
           return;
         }
 
         if (data.user) {
-          // Show success message or redirect
-          router.push('/'); //redirect after registration
+          console.log('Successfully registered');
+          router.push('/');
         }
       } else {
-        // Handle login
         const { data, error } = await supabase.auth.signInWithPassword({
           email: formData.email,
           password: formData.password,
@@ -133,21 +133,40 @@ export default function PrijaviSePage() {
           } else {
             setAuthError('Greška prilikom prijave');
           }
-          console.error('Login error:', error);
+          console.error('Login failed');
           return;
         }
 
         if (data.user) {
-          router.push('/'); // redirect after login
+          console.log('Successfully logged in');
+          router.push('/');
         }
       }
     } catch (error) {
-      console.error('Auth error:', error);
+      console.error('Authentication error occurred');
       setAuthError('Došlo je do greške. Pokušajte ponovno.');
     } finally {
+      // Ensure minimum loading time
+      const elapsedTime = Date.now() - startTime;
+      if (elapsedTime < minLoadingTime) {
+        await new Promise(resolve => setTimeout(resolve, minLoadingTime - elapsedTime));
+      }
       setIsLoading(false);
     }
   };
+
+  // Move loading state check to the main render
+  if (isLoading) {
+    return (
+      <main className="flex min-h-screen flex-col items-center justify-center p-10">
+        <Navigation isOpen={isOpen} setIsOpen={setIsOpen} />
+        <LoadingWheel 
+          size="md" 
+          message={formType === 'login' ? 'Prijava u tijeku...' : 'Registracija u tijeku...'} 
+        />
+      </main>
+    );
+  }
 
   const passwordInputStyle = `
     input::-ms-reveal,

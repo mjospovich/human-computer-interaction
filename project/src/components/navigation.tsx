@@ -4,6 +4,7 @@ import { useEffect, useRef } from "react";
 import Link from "next/link";
 import Logo from "../assets/KupujemAutoLogo.svg";
 import { usePathname } from "next/navigation";
+import { useAuth } from '@/context/authContext';
 
 type Page = {
   title: string;
@@ -37,8 +38,19 @@ function processPage(page: Page, index: number, pathname: string) {
 }
 
 export function Navigation({ isOpen, setIsOpen }: NavigationProps) {
+  const { isAuthenticated } = useAuth();
   const pathname = usePathname();
   const menuRef = useRef<HTMLDivElement>(null);
+  
+  // Updated navigation links array
+  const navigationLinks = [
+    { title: "Procijeni vrijednost", path: "/" },
+    { title: "Popularno", path: "/popularno" },
+    { title: "Podrška", path: "/podrska" },
+    isAuthenticated 
+      ? { title: "Profil", path: "/profil" }
+      : { title: "Prijavi se", path: "/prijavise" }
+  ];
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -88,12 +100,18 @@ export function Navigation({ isOpen, setIsOpen }: NavigationProps) {
         </button>
       </div>
 
-      {/* Navigation Section */}
-      <nav className="hidden md:block">
-        <ul className="flex space-x-4 text-main-text-black">
-          {pages.map((page, index) => processPage(page, index, pathname))}
-        </ul>
-      </nav>
+      {/* Navigation Links */}
+      <div className="hidden md:flex items-center space-x-4">
+        {navigationLinks.map((link, index) => (
+          <Link 
+            key={index}
+            href={link.path} 
+            className={pathname === link.path ? "font-bold text-main-text-black" : "text-main-text-black"}
+          >
+            {link.title}
+          </Link>
+        ))}
+      </div>
 
       {/* Mobile Menu */}
       {isOpen && (
@@ -116,7 +134,16 @@ export function Navigation({ isOpen, setIsOpen }: NavigationProps) {
               </button>
             </div>
             <ul className="mt-4 space-y-4 text-main-text-black">
-              {pages.map((page, index) => processPage(page, index, pathname))}
+              {navigationLinks.map((link, index) => (
+                <li key={index} className="text-center">
+                  <Link
+                    href={link.path}
+                    className={pathname === link.path ? "font-bold text-main-text-black" : "text-main-text-black"}
+                  >
+                    {link.title}
+                  </Link>
+                </li>
+              ))}
             </ul>
           </div>
         </div>
