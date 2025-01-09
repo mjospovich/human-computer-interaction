@@ -9,13 +9,12 @@ import { ProfileAvatar } from "@/components/profileAvatar";
 
 export default function ProfilPage() {
   const [isOpen, setIsOpen] = useState(false);
-  const { user } = useAuth();
+  const { user, logout } = useAuth();
   const router = useRouter();
 
   const handleLogout = async () => {
     try {
-      const { error } = await supabase.auth.signOut();
-      if (error) throw error;
+      await logout();
       router.push('/prijavise');
     } catch (error) {
       console.error('Error logging out:', error);

@@ -8,6 +8,7 @@ type AuthContextType = {
   user: any | null;
   showLoginToast: boolean;
   setShowLoginToast: (show: boolean) => void;
+  logout: () => void;
 };
 
 const AuthContext = createContext<AuthContextType>({
@@ -15,6 +16,7 @@ const AuthContext = createContext<AuthContextType>({
   user: null,
   showLoginToast: false,
   setShowLoginToast: () => {},
+  logout: () => {},
 });
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
@@ -40,6 +42,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       if (event === 'SIGNED_OUT') {
         setUser(null);
         setIsAuthenticated(false);
+        setShowLoginToast(false); // Clear login toast on logout
       }
     });
 
@@ -48,8 +51,24 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     };
   }, []);
 
+  // Add logout function to context
+  const logout = async () => {
+    try {
+      await supabase.auth.signOut();
+      setShowLoginToast(false); // Ensure toast is cleared
+    } catch (error) {
+      console.error('Error during logout:', error);
+    }
+  };
+
   return (
-    <AuthContext.Provider value={{ isAuthenticated, user, showLoginToast, setShowLoginToast }}>
+    <AuthContext.Provider value={{ 
+      isAuthenticated, 
+      user, 
+      showLoginToast, 
+      setShowLoginToast,
+      logout // Add logout function to context
+    }}>
       {children}
     </AuthContext.Provider>
   );
