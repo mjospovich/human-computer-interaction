@@ -6,35 +6,9 @@ import Logo from "../assets/KupujemAutoLogo.svg";
 import { usePathname } from "next/navigation";
 import { useAuth } from '@/context/authContext';
 
-type Page = {
-  title: string;
-  path: `/${string}`;
-};
-
-const pages: Page[] = [
-  { title: "Procijeni vrijednost ", path: "/" },
-  { title: "Popularno", path: "/popularno" },
-  { title: "Podrška", path: "/podrska" },
-  //{ title: "O nama", path: "/onama" },
-  { title: "Prijavi se", path: "/prijavise" },
-];
-
 export interface NavigationProps {
   isOpen: boolean;
   setIsOpen: (isOpen: boolean) => void;
-}
-
-function processPage(page: Page, index: number, pathname: string) {
-  return (
-    <li key={index} className="text-center">
-      <Link
-        href={page.path}
-        className={pathname === page.path ? "font-bold text-main-text-black" : ""}
-      >
-        {page.title}
-      </Link>
-    </li>
-  );
 }
 
 export function Navigation({ isOpen, setIsOpen }: NavigationProps) {
@@ -42,11 +16,11 @@ export function Navigation({ isOpen, setIsOpen }: NavigationProps) {
   const pathname = usePathname();
   const menuRef = useRef<HTMLDivElement>(null);
   
-  // Updated navigation links array
   const navigationLinks = [
     { title: "Procijeni vrijednost", path: "/" },
     { title: "Popularno", path: "/popularno" },
     { title: "Podrška", path: "/podrska" },
+    //{ title: "O nama", path: "/onama" },
     isAuthenticated 
       ? { title: "Profil", path: "/profil" }
       : { title: "Prijavi se", path: "/prijavise" }
@@ -89,11 +63,11 @@ export function Navigation({ isOpen, setIsOpen }: NavigationProps) {
         >
           <span className="sr-only">Open main menu</span>
           {!isOpen ? (
-            <svg className="block h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+            <svg className="block h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 24 24" stroke="currentColor" aria-hidden="true">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16m-7 6h7" />
             </svg>
           ) : (
-            <svg className="block h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+            <svg className="block h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 24 24" stroke="currentColor" aria-hidden="true">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
             </svg>
           )}
@@ -128,7 +102,7 @@ export function Navigation({ isOpen, setIsOpen }: NavigationProps) {
                 className="inline-flex items-center justify-center p-2 rounded-md text-main-text-black hover:text-secondary-text-black focus:outline-none"
               >
                 <span className="sr-only">Close main menu</span>
-                <svg className="block h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                <svg className="block h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 24 24" stroke="currentColor" aria-hidden="true">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
                 </svg>
               </button>

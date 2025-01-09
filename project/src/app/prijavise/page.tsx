@@ -26,6 +26,7 @@ export default function PrijaviSePage() {
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [authError, setAuthError] = useState('');
+  const [registrationSuccess, setRegistrationSuccess] = useState(false);
 
   const validatePassword = (password: string) => {
     if (password.length < 8) {
@@ -119,7 +120,8 @@ export default function PrijaviSePage() {
 
         if (data.user) {
           console.log('Successfully registered');
-          router.push('/');
+          setRegistrationSuccess(true);
+          // Don't redirect, show success message instead
         }
       } else {
         const { data, error } = await supabase.auth.signInWithPassword({
@@ -154,6 +156,38 @@ export default function PrijaviSePage() {
       setIsLoading(false);
     }
   };
+
+  // Show success message after registration
+  if (registrationSuccess) {
+    return (
+      <main className="flex min-h-screen flex-col items-center p-10">
+        <Navigation isOpen={isOpen} setIsOpen={setIsOpen} />
+        <div className="w-full max-w-md my-auto">
+          <div className="bg-white p-8 rounded-2xl shadow-sm text-center space-y-4">
+            <svg className="w-16 h-16 text-green-500 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"/>
+            </svg>
+            <h2 className="text-2xl font-bold text-main-text-black">Registracija uspješna!</h2>
+            <p className="text-secondary-text-black">
+              Provjerite svoj email za potvrdu registracije.
+            </p>
+            <p className="text-secondary-text-black">
+              Nakon potvrde možete se prijaviti u svoj račun.
+            </p>
+            <button
+              onClick={() => {
+                setRegistrationSuccess(false);
+                setFormType('login');
+              }}
+              className="mt-4 text-brand hover:text-brand-light transition-colors duration-300"
+            >
+              Povratak na prijavu
+            </button>
+          </div>
+        </div>
+      </main>
+    );
+  }
 
   // Move loading state check to the main render
   if (isLoading) {
@@ -222,7 +256,7 @@ export default function PrijaviSePage() {
                   className="w-full px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-brand focus:border-transparent pr-10"
                   required
                 />
-                {/* Only one eye icon here */}
+
                 <button
                   type="button"
                   className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-700"
