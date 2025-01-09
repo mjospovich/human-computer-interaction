@@ -5,6 +5,7 @@ import Link from "next/link";
 import Logo from "../assets/KupujemAutoLogo.svg";
 import { usePathname } from "next/navigation";
 import { useAuth } from '@/context/authContext';
+import { ProfileAvatar } from './profileAvatar';
 
 export interface NavigationProps {
   isOpen: boolean;
@@ -12,7 +13,7 @@ export interface NavigationProps {
 }
 
 export function Navigation({ isOpen, setIsOpen }: NavigationProps) {
-  const { isAuthenticated } = useAuth();
+  const { isAuthenticated, user } = useAuth();
   const pathname = usePathname();
   const menuRef = useRef<HTMLDivElement>(null);
   
@@ -21,9 +22,9 @@ export function Navigation({ isOpen, setIsOpen }: NavigationProps) {
     { title: "Popularno", path: "/popularno" },
     { title: "Podrška", path: "/podrska" },
     //{ title: "O nama", path: "/onama" },
-    isAuthenticated 
-      ? { title: "Profil", path: "/profil" }
-      : { title: "Prijavi se", path: "/prijavise" }
+
+
+    //PRIJAVI SE or PROFIL added later
   ];
 
   useEffect(() => {
@@ -74,7 +75,7 @@ export function Navigation({ isOpen, setIsOpen }: NavigationProps) {
         </button>
       </div>
 
-      {/* Navigation Links */}
+      {/* Navigation Links with Profile Avatar */}
       <div className="hidden md:flex items-center space-x-4">
         {navigationLinks.map((link, index) => (
           <Link 
@@ -85,6 +86,15 @@ export function Navigation({ isOpen, setIsOpen }: NavigationProps) {
             {link.title}
           </Link>
         ))}
+        {isAuthenticated ? (
+          <Link href="/profil">
+            <ProfileAvatar email={user?.email || ''} size="sm" />
+          </Link>
+        ) : (
+          <Link href="/prijavise" className="text-main-text-black">
+            Prijavi se
+          </Link>
+        )}
       </div>
 
       {/* Mobile Menu */}

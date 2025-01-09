@@ -5,6 +5,7 @@ import { useAuth } from "@/context/authContext";
 import { supabase } from '@/lib/supabase';
 import { useRouter } from 'next/navigation';
 import { useState } from "react";
+import { ProfileAvatar } from "@/components/profileAvatar";
 
 export default function ProfilPage() {
   const [isOpen, setIsOpen] = useState(false);
@@ -27,9 +28,12 @@ export default function ProfilPage() {
       
       <div className="w-full max-w-md my-auto">
         <div className="bg-white p-8 rounded-2xl shadow-sm">
-          <h1 className="text-2xl font-bold text-main-text-black mb-6">Moj Profil</h1>
+          <div className="flex flex-col items-center mb-6">
+            <ProfileAvatar email={user?.email || ''} size="lg" />
+            <h1 className="text-2xl font-bold text-main-text-black mt-4">Moj Profil</h1>
+          </div>
           
-          <div className="mb-6">
+          <div className="mb-6 text-center">
             <p className="text-sm text-secondary-text-black">Email:</p>
             <p className="text-lg text-main-text-black">{user?.email}</p>
           </div>
