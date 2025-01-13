@@ -35,6 +35,9 @@ export default function PrijaviSePage() {
     if (!/\d/.test(password)) {
       return "Lozinka mora sadržavati najmanje jedan broj";
     }
+    if (!/[a-zA-Z]/.test(password)) {
+      return "Lozinka mora sadržavati najmanje jedno slovo";
+    }
     return "";
   };
 
