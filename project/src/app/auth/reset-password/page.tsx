@@ -1,30 +1,121 @@
 "use client";
 
-import { useEffect } from 'react';
+import { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { supabase } from '@/lib/supabase';
 import { LoadingWheel } from "@/components/loadingWheel";
+import { Toast } from "@/components/toast";
 
 export default function ResetPasswordPage() {
   const router = useRouter();
+  const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+  const [showToast, setShowToast] = useState(false);
+  const [toastMessage, setToastMessage] = useState('');
+  const [toastType, setToastType] = useState<'success' | 'error'>('success');
 
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      router.push('/prijavise');
-    }, 2000);
+  const handleResetPassword = async (e: React.FormEvent) => {
+    e.preventDefault();
+    
+    if (password !== confirmPassword) {
+      setToastMessage('Lozinke se ne podudaraju');
+      setToastType('error');
+      setShowToast(true);
+      return;
+    }
 
-    return () => clearTimeout(timer);
-  }, [router]);
+    if (password.length < 8) {
+      setToastMessage('Lozinka mora imati najmanje 8 znakova');
+      setToastType('error');
+      setShowToast(true);
+      return;
+    }
+
+    setIsLoading(true);
+
+    try {
+      const { error } = await supabase.auth.updateUser({ password });
+      
+      if (error) throw error;
+
+      setToastMessage('Lozinka uspješno promijenjena!');
+      setToastType('success');
+      setShowToast(true);
+
+      // Redirect after successful password reset
+      setTimeout(() => {
+        router.push('/prijavise');
+      }, 2000);
+
+    } catch (error) {
+      setToastMessage('Greška pri promjeni lozinke');
+      setToastType('error');
+      setShowToast(true);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  if (isLoading) {
+    return (
+      <main className="flex min-h-screen flex-col items-center justify-center p-10">
+        <LoadingWheel size="md" message="Promjena lozinke u tijeku..." />
+      </main>
+    );
+  }
 
   return (
-    <main className="flex min-h-screen flex-col items-center justify-center p-10">
-      <div className="text-center space-y-6">
-        <svg className="w-16 h-16 text-green-500 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"/>
-        </svg>
-        <h1 className="text-2xl font-bold text-main-text-black">Email Poslan!</h1>
-        <p className="text-secondary-text-black">Provjerite svoj email za promjenu lozinke.</p>
-        <p className="text-secondary-text-black">Preusmjeravanje na prijavu...</p>
-        <LoadingWheel size="sm" />
+    <main className="flex min-h-screen flex-col items-center p-10">
+      {showToast && (
+        <Toast 
+          message={toastMessage}
+          type={toastType}
+          onClose={() => setShowToast(false)}
+        />
+      )}
+      
+      <div className="w-full max-w-md my-auto">
+        <form onSubmit={handleResetPassword} className="bg-white p-8 rounded-2xl shadow-sm space-y-4">
+          <h1 className="text-2xl font-bold text-main-text-black mb-6 text-center">
+            Nova Lozinka
+          </h1>
+
+          <div>
+            <label className="block text-sm font-medium text-main-text-black mb-1">
+              Nova Lozinka:
+            </label>
+            <input
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              className="w-full px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-brand focus:border-transparent"
+              required
+            />
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium text-main-text-black mb-1">
+              Potvrdi Novu Lozinku:
+            </label>
+            <input
+              type="password"
+              value={confirmPassword}
+              onChange={(e) => setConfirmPassword(e.target.value)}
+              className="w-full px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-brand focus:border-transparent"
+              required
+            />
+          </div>
+
+          <div className="flex justify-center pt-4">
+            <button
+              type="submit"
+              className="w-48 py-3 px-4 bg-brand text-white rounded-full text-sm hover:bg-brand-light hover:text-main-text-black transition-colors duration-300"
+            >
+              Promijeni Lozinku
+            </button>
+          </div>
+        </form>
       </div>
     </main>
   );

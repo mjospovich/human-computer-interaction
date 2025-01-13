@@ -29,7 +29,7 @@ export default function ProfilPage() {
   const handlePasswordReset = async () => {
     try {
       const { error } = await supabase.auth.resetPasswordForEmail(user?.email || '', {
-        redirectTo: `${window.location.origin}/auth/callback`,
+        redirectTo: `${window.location.origin}/auth/reset-password`,
       });
       if (error) throw error;
       setToastMessage('Email za promjenu lozinke je poslan!');
