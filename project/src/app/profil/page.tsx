@@ -63,7 +63,7 @@ export default function ProfilPage() {
 
   return (
     <main className="flex min-h-screen flex-col items-center p-10">
-      <Navigation isOpen={isOpen} setIsOpen={setIsOpen} />
+      <Navigation />
       {showToast && (
         <Toast 
           message={toastMessage}

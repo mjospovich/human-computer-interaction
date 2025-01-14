@@ -8,9 +8,6 @@ import { Toast } from "@/components/toast";
 import { useAuth } from "@/context/authContext";
 
 export default function ProcijeniVrijednost() {
-  // State to control the navigation menu
-  // not needed right now
-  const [isOpen, setIsOpen] = useState(false);
   const [inputValue, setInputValue] = useState('');
   const [error, setError] = useState('');
   const [isInputFocused, setIsInputFocused] = useState(false);
@@ -72,7 +69,7 @@ export default function ProcijeniVrijednost() {
           onClose={() => setShowLoginToast(false)} 
         />
       )}
-      <Navigation isOpen={isOpen} setIsOpen={setIsOpen} />
+      <Navigation />
 
       {/*Elements above input*/}
       <div className="mb-4 text-center w-full max-w-xl">

@@ -186,7 +186,7 @@ export default function PrijaviSePage() {
   if (registrationSuccess) {
     return (
       <main className="flex min-h-screen flex-col items-center p-10">
-        <Navigation isOpen={isOpen} setIsOpen={setIsOpen} />
+        <Navigation />
         <div className="w-full max-w-md my-auto">
           <div className="bg-white p-8 rounded-2xl shadow-sm text-center space-y-4">
             <svg className="w-16 h-16 text-green-500 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -218,7 +218,7 @@ export default function PrijaviSePage() {
   if (isLoading) {
     return (
       <main className="flex min-h-screen flex-col items-center justify-center p-10">
-        <Navigation isOpen={isOpen} setIsOpen={setIsOpen} />
+        <Navigation />
         <LoadingWheel 
           size="md" 
           message={formType === 'login' ? 'Prijava u tijeku...' : 'Registracija u tijeku...'} 
@@ -243,7 +243,7 @@ export default function PrijaviSePage() {
     <>
       <style jsx global>{passwordInputStyle}</style>
       <main className="flex min-h-screen flex-col items-center p-10">
-        <Navigation isOpen={isOpen} setIsOpen={setIsOpen} />
+        <Navigation />
         
         <div className="w-full max-w-md my-auto">
           <form onSubmit={handleSubmit} className="bg-white p-8 rounded-2xl shadow-sm space-y-4">

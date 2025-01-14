@@ -1,18 +1,14 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import Logo from "../assets/KupujemAutoLogo.svg";
 import { usePathname } from "next/navigation";
 import { useAuth } from '@/context/authContext';
 import { ProfileAvatar } from './profileAvatar';
 
-export interface NavigationProps {
-  isOpen: boolean;
-  setIsOpen: (isOpen: boolean) => void;
-}
-
-export function Navigation({ isOpen, setIsOpen }: NavigationProps) {
+export function Navigation() {
+  const [isOpen, setIsOpen] = useState(false);
   const { isAuthenticated, user } = useAuth();
   const pathname = usePathname();
   const menuRef = useRef<HTMLDivElement>(null);
@@ -34,11 +30,7 @@ export function Navigation({ isOpen, setIsOpen }: NavigationProps) {
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
-  }, [isOpen]);
-
-  useEffect(() => {
-    setIsOpen(isOpen);
-  }, [isOpen, setIsOpen]);
+  }, []);
 
   return (
     <header className={`bg-background fixed top-0 left-0 w-full flex justify-between items-center p-4 z-50 ${isOpen ? "bg-container-white shadow-md" : ""}`}>

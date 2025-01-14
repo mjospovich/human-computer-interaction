@@ -82,7 +82,7 @@ export default function ResetPasswordPage() {
   if (isLoading) {
     return (
       <main className="flex min-h-screen flex-col items-center justify-center p-10">
-        <Navigation isOpen={isOpen} setIsOpen={setIsOpen} />
+        <Navigation />
         <LoadingWheel size="md" message="Promjena lozinke u tijeku..." />
       </main>
     );
@@ -90,7 +90,7 @@ export default function ResetPasswordPage() {
 
   return (
     <main className="flex min-h-screen flex-col items-center p-10">
-      <Navigation isOpen={isOpen} setIsOpen={setIsOpen} />
+      <Navigation />
       {showToast && (
         <Toast 
           message={toastMessage}
