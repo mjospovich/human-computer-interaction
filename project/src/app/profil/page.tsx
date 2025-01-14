@@ -9,7 +9,6 @@ import { ProfileAvatar } from "@/components/profileAvatar";
 import { Toast } from "@/components/toast";
 
 export default function ProfilPage() {
-  const [isOpen, setIsOpen] = useState(false);
   const { user, logout } = useAuth();
   const router = useRouter();
   const [showToast, setShowToast] = useState(false);

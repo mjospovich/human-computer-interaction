@@ -8,7 +8,7 @@ import { Navigation } from "@/components/navigation";
 import { CarCard } from "@/components/carCard";
 
 export default function PopularnoPage() {
-  const [isOpen, setIsOpen] = useState(false);
+  
   const [visibleCards, setVisibleCards] = useState(9);
   const cars = getPopularCars();
 

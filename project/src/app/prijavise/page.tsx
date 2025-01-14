@@ -10,7 +10,6 @@ type FormType = 'login' | 'register';
 
 export default function PrijaviSePage() {
   const router = useRouter();
-  const [isOpen, setIsOpen] = useState(false);
   const [formType, setFormType] = useState<FormType>('login');
   const [formData, setFormData] = useState({
     email: '',
@@ -64,19 +63,14 @@ export default function PrijaviSePage() {
     }
   };
 
-  // Remove detailed session logging
   const testSupabaseConnection = async () => {
     try {
-      const { data: { session }, error } = await supabase.auth.getSession();
-      if (error) {
-        console.error('Authentication error occurred');
-        return;
-      }
+      const { data: { session } } = await supabase.auth.getSession();
       if (session) {
         console.log('User is authenticated');
       }
     } catch (error) {
-      console.error('Connection error occurred');
+      console.error('Connection error occurred:', error);
     }
   };
 
@@ -85,25 +79,22 @@ export default function PrijaviSePage() {
     testSupabaseConnection();
   }, []);
 
-  // Update handleSubmit with minimal logging
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
     setAuthError('');
 
-    // Set start time
     const startTime = Date.now();
-    const minLoadingTime = 800; // 800ms minimum loading time
+    const minLoadingTime = 800;
 
     try {
       if (formType === 'register') {
-        // Validate passwords match
         if (formData.password !== formData.confirmPassword) {
           setAuthError('Lozinke se ne podudaraju');
           return;
         }
 
-        const { data, error } = await supabase.auth.signUp({
+        const { data, error: signUpError } = await supabase.auth.signUp({
           email: formData.email,
           password: formData.password,
           options: {
@@ -111,34 +102,33 @@ export default function PrijaviSePage() {
           },
         });
 
-        if (error) {
-          if (error.message.includes('already registered')) {
+        if (signUpError) {
+          if (signUpError.message.includes('already registered')) {
             setAuthError('Email je već registriran');
           } else {
             setAuthError('Greška prilikom registracije');
           }
-          console.error('Registration failed');
+          console.error('Registration failed:', signUpError.message);
           return;
         }
 
         if (data.user) {
           console.log('Successfully registered');
           setRegistrationSuccess(true);
-          // Don't redirect, show success message instead
         }
       } else {
-        const { data, error } = await supabase.auth.signInWithPassword({
+        const { data, error: signInError } = await supabase.auth.signInWithPassword({
           email: formData.email,
           password: formData.password,
         });
 
-        if (error) {
-          if (error.message.includes('Invalid login')) {
+        if (signInError) {
+          if (signInError.message.includes('Invalid login')) {
             setAuthError('Pogrešan email ili lozinka');
           } else {
             setAuthError('Greška prilikom prijave');
           }
-          console.error('Login failed');
+          console.error('Login failed:', signInError.message);
           return;
         }
 
@@ -148,10 +138,9 @@ export default function PrijaviSePage() {
         }
       }
     } catch (error) {
-      console.error('Authentication error occurred');
+      console.error('Authentication error occurred:', error);
       setAuthError('Došlo je do greške. Pokušajte ponovno.');
     } finally {
-      // Ensure minimum loading time
       const elapsedTime = Date.now() - startTime;
       if (elapsedTime < minLoadingTime) {
         await new Promise(resolve => setTimeout(resolve, minLoadingTime - elapsedTime));
@@ -163,20 +152,20 @@ export default function PrijaviSePage() {
   const handleGoogleLogin = async () => {
     try {
       setIsLoading(true);
-      const { error } = await supabase.auth.signInWithOAuth({
+      const { error: googleError } = await supabase.auth.signInWithOAuth({
         provider: 'google',
         options: {
           redirectTo: `${window.location.origin}/auth/callback`
         }
       });
 
-      if (error) {
+      if (googleError) {
         setAuthError('Greška prilikom prijave s Googleom');
-        console.error('Google login failed');
+        console.error('Google login failed:', googleError.message);
       }
     } catch (error) {
+      console.error('Authentication error occurred:', error);
       setAuthError('Došlo je do greške. Pokušajte ponovno.');
-      console.error('Authentication error occurred');
     } finally {
       setIsLoading(false);
     }

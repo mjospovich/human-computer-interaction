@@ -11,7 +11,6 @@ import { useAuth } from "@/context/authContext";
 export default function ResetPasswordPage() {
   const router = useRouter();
   const { logout } = useAuth();
-  const [isOpen, setIsOpen] = useState(false);
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
@@ -57,13 +56,15 @@ export default function ResetPasswordPage() {
     try {
       const { error } = await supabase.auth.updateUser({ password });
       
-      if (error) throw error;
+      if (error) {
+        console.error('Password reset error:', error.message);
+        throw new Error(error.message);
+      }
 
       setToastMessage('Lozinka uspješno promijenjena!');
       setToastType('success');
       setShowToast(true);
 
-      // Logout and redirect after successful password reset
       await logout();
       
       setTimeout(() => {
@@ -71,7 +72,8 @@ export default function ResetPasswordPage() {
       }, 2000);
 
     } catch (error) {
-      setToastMessage('Greška pri promjeni lozinke');
+      const errorMessage = error instanceof Error ? error.message : 'Greška pri promjeni lozinke';
+      setToastMessage(errorMessage);
       setToastType('error');
       setShowToast(true);
     } finally {

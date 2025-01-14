@@ -3,7 +3,6 @@ import carsData from '@/data/template.json';
 import { Navigation } from "@/components/navigation";
 import { getBrandLogo } from '@/data/brandLogos';
 import { Rating } from "@/components/rating";
-import { LoadingWheel } from "@/components/loadingWheel";
 import { notFound } from 'next/navigation';
 
 // Move type definition to a separate types file later

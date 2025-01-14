@@ -14,7 +14,7 @@ export function FormInput({
   value, 
   onChange, 
   placeholder = '', 
-  required = false,
+  //required = false,
   type = 'text',
   options = [],
   error = ''

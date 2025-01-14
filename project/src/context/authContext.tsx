@@ -3,9 +3,19 @@
 import { createContext, useContext, useEffect, useState } from 'react';
 import { supabase } from '@/lib/supabase';
 
+interface User {
+  id: string;
+  email?: string;
+  user_metadata?: {
+    first_name?: string;
+    last_name?: string;
+  };
+  created_at: string;
+}
+
 type AuthContextType = {
   isAuthenticated: boolean;
-  user: any | null;
+  user: User | null;
   showLoginToast: boolean;
   setShowLoginToast: (show: boolean) => void;
   logout: () => void;
@@ -20,7 +30,7 @@ const AuthContext = createContext<AuthContextType>({
 });
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
-  const [user, setUser] = useState<any>(null);
+  const [user, setUser] = useState<User | null>(null);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [showLoginToast, setShowLoginToast] = useState(false);
 
@@ -35,7 +45,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
     const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
       if (event === 'SIGNED_IN') {
-        setUser(session?.user);
+        setUser(session?.user ?? null);
         setIsAuthenticated(true);
         setShowLoginToast(true);
       }

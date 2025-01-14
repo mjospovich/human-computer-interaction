@@ -6,7 +6,6 @@ import { FormButtonGroup } from "@/components/formButtonGroup";
 import { useState, useEffect } from "react";
 
 export default function ManualniUnosPage() {
-  const [isOpen, setIsOpen] = useState(false);
   const [formData, setFormData] = useState({
     brand: '',
     model: '',
@@ -85,7 +84,7 @@ export default function ManualniUnosPage() {
 
   return (
     <main className="flex min-h-screen flex-col items-center p-10">
-      <Navigation isOpen={isOpen} setIsOpen={setIsOpen} />
+      <Navigation />
       
       <div className="w-full max-w-2xl mt-8">
         {/* Updated header section */}
