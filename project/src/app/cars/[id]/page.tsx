@@ -1,13 +1,12 @@
-"use client";
-
-import { useEffect, useState } from 'react';
 import Image from 'next/image';
 import carsData from '@/data/template.json';
 import { Navigation } from "@/components/navigation";
 import { getBrandLogo } from '@/data/brandLogos';
 import { Rating } from "@/components/rating";
 import { LoadingWheel } from "@/components/loadingWheel";
+import { notFound } from 'next/navigation';
 
+// Move type definition to a separate types file later
 type CarDetail = {
   id: string;
   title: string;
@@ -34,75 +33,38 @@ type CarDetail = {
   garage_kept: boolean;
 };
 
+// Helper function to get car by ID
+function getCarById(id: string): CarDetail | null {
+  const car = Object.values(carsData).find(car => car.id === id);
+  return car ? car as CarDetail : null;
+}
+
 export default function CarDetailPage({ params }: { params: { id: string } }) {
-  const [isOpen, setIsOpen] = useState(false);
-  const { id } = params;
-  const [car, setCar] = useState<CarDetail | null>(null);
-  const [imageError, setImageError] = useState(false);
-  const [isLoading, setIsLoading] = useState(true); // Add loading state
+  const car = getCarById(params.id);
 
-  useEffect(() => {
-    const fetchedCar = Object.values(carsData).find(car => car.id === id);
-    if (fetchedCar) {
-      const { ...carDetails} = fetchedCar;
-      setCar(carDetails as CarDetail);
-    } else {
-      setCar(null);
-    }
-    
-    // Add minimum loading time of 500ms
-    const timer = setTimeout(() => {
-      setIsLoading(false);
-    }, 500);
-
-    // Cleanup timeout if component unmounts
-    return () => clearTimeout(timer);
-  }, [id]);
-
-  // Loading state
-  if (isLoading) {
-    return (
-      <main className="flex min-h-screen flex-col items-center justify-center md:justify-center p-10">
-        <Navigation isOpen={isOpen} setIsOpen={setIsOpen} />
-        <LoadingWheel size="md" message="Analiza auta u tijeku..." />
-      </main>
-    );
-  }
-
-  // Not found state
   if (!car) {
-    return (
-      <main className="flex min-h-screen flex-col items-center justify-center md:justify-center p-10">
-        <Navigation isOpen={isOpen} setIsOpen={setIsOpen} />
-        <div className="flex flex-col items-center justify-center">
-          <h1 className="text-2xl font-bold mb-4">Auto Nije Pronađen</h1>
-          <p className="text-secondary-text-black">Traženi oglas ne postoji.</p>
-        </div>
-      </main>
-    );
+    notFound();
   }
 
   return (
     <main className="flex min-h-screen flex-col items-center p-10">
-      <Navigation isOpen={isOpen} setIsOpen={setIsOpen} />
+      <Navigation />
       
       <div className="flex flex-col-reverse md:flex-row gap-8 w-full max-w-4xl mt-8">
-      {/* Left Column - Scrollable */}
+        {/* Left Column - Scrollable */}
         <div className="w-full md:w-2/3 space-y-6">
           {/* Image Container */}
           <div className="w-full relative rounded-lg overflow-hidden">
             <Image 
-              src={imageError ? '/images/default-car.jpg' : car.img}
+              src={car.img}
               alt={car.title}
-              width={896}  // 2/3 of max-w-4xl (1536px)
-              height={0}   // Auto height
+              width={896}
+              height={0}
               className="object-contain w-full h-auto"
               sizes="(max-width: 768px) 100vw, 66vw"
               priority
-              onError={() => setImageError(true)}
             />
           </div>
-          
           
           {/* Details Section */}
           <div className="space-y-4 bg-container-white p-6 rounded-lg shadow">
@@ -124,7 +86,6 @@ export default function CarDetailPage({ params }: { params: { id: string } }) {
           </div>
         </div>
 
-  
         {/* Right Column - Fixed */}
         <div className="w-full md:w-1/3">
           <div className="sticky top-12 bg-container-white p-4 rounded-lg shadow space-y-4">
@@ -178,3 +139,12 @@ export default function CarDetailPage({ params }: { params: { id: string } }) {
     </main>
   );
 }
+
+// Add this for when we switch to database
+// export async function generateStaticParams() {
+//   // This will be replaced with a database query later
+//   const cars = Object.values(carsData);
+//   return cars.map((car) => ({
+//     id: car.id,
+//   }));
+// }

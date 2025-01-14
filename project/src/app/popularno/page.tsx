@@ -34,7 +34,7 @@ export default function PopularnoPage() {
 
   return (
     <main className="flex min-h-screen flex-col items-center justify-start pt-20 sm:pt-24 bg-background">
-      <Navigation isOpen={isOpen} setIsOpen={setIsOpen} />
+      <Navigation />
 
       {/* Title and Description */}
       <div className="text-center">
