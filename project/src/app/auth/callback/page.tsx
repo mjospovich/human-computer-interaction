@@ -3,17 +3,26 @@
 import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { LoadingWheel } from "@/components/loadingWheel";
+import { supabase } from '@/lib/supabase';
 
 export default function AuthCallbackPage() {
   const router = useRouter();
 
   useEffect(() => {
-    // Add a small delay before redirecting
-    const timer = setTimeout(() => {
-      router.push('/prijavise');
-    }, 2000);
+    const handleAuthCallback = async () => {
+      const { error } = await supabase.auth.getSession();
+      
+      if (error) {
+        console.error('Error during auth callback:', error);
+      }
 
-    return () => clearTimeout(timer);
+      // Add a small delay before redirecting
+      setTimeout(() => {
+        router.push('/');
+      }, 2000);
+    };
+
+    handleAuthCallback();
   }, [router]);
 
   return (
@@ -22,9 +31,8 @@ export default function AuthCallbackPage() {
         <svg className="w-16 h-16 text-green-500 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"/>
         </svg>
-        <h1 className="text-2xl font-bold text-main-text-black">Email Potvrđen!</h1>
-        <p className="text-secondary-text-black">Vaš račun je uspješno potvrđen.</p>
-        <p className="text-secondary-text-black">Preusmjeravanje na prijavu...</p>
+        <h1 className="text-2xl font-bold text-main-text-black">Prijava Uspješna!</h1>
+        <p className="text-secondary-text-black">Preusmjeravanje...</p>
         <LoadingWheel size="sm" />
       </div>
     </main>
