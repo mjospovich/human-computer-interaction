@@ -42,20 +42,24 @@ export function CarCard({ id, imageUrl, name, price, brand }: CarCardProps) {
   const displayName = truncateText(name);
   const logoPath = getBrandLogo(brand);
   const [imageError, setImageError] = useState(false);
+  const fallbackImage = '/images/default-car.jpg';
+
+  // Validate image URL
+  const validatedImageUrl = imageUrl && imageUrl.startsWith('http') ? imageUrl : fallbackImage;
 
   return (
     <Link href={`/cars/${id}`} passHref>
-      <div className="w-full md-grid:max-w-full h-56 mx-auto bg-container-white shadow-md rounded-xl overflow-hidden flex flex-col cursor-pointer hover:shadow-lg transition-shadow duration-300 group">
+      <div className="w-full max-w-72 md-grid:min-w-64 h-56 mx-auto bg-container-white shadow-md rounded-xl overflow-hidden flex flex-col cursor-pointer hover:shadow-lg transition-shadow duration-300 group">
 
         {/*Image*/}
         <div className="relative h-3/4">
           <Image
-            src={imageError ? '/images/default-car.jpg' : imageUrl}
+            src={imageError ? fallbackImage : validatedImageUrl}
             alt={name}
             fill
             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
             className="object-cover transition-opacity duration-300 group-hover:opacity-10 group-hover:blur-sm"
-            priority
+            priority={false}
             onError={() => setImageError(true)}
           />
           {/* Image Hover Overlay Text */}
