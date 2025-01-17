@@ -25,12 +25,12 @@ export function FormButtonGroup({
           </span>
         )}
       </div>
-      <div className="flex gap-2 w-full">
+      <div className="flex flex-wrap gap-2 w-full">
         {options.map((option) => (
           <button
             key={option}
             onClick={() => onChange(option)}
-            className={`flex-1 px-4 py-2 rounded-lg border transition-colors duration-200 ${
+            className={`flex-1 min-w-[calc(50%-4px)] sm:min-w-0 px-4 py-2 text-sm sm:text-base rounded-lg border transition-colors duration-200 ${
               value === option
                 ? 'bg-brand-light text-main-text-black border-brand-light'
                 : 'bg-white text-secondary-text-black border-gray-300 hover:border-brand'
