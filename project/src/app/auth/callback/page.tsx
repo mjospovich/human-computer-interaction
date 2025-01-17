@@ -1,3 +1,8 @@
+//callback page for authentication, it handles:
+// 1. Google OAuth redirects
+// 2. Magic link confirmations
+// 3. Password reset confirmations
+
 "use client";
 
 import { useEffect } from 'react';
@@ -18,7 +23,7 @@ export default function AuthCallbackPage() {
 
       // Add a small delay before redirecting
       setTimeout(() => {
-        router.push('/');
+        router.push('/'); //home page
       }, 2000);
     };
 

@@ -1,3 +1,5 @@
+//car id page - showing car details and rating 
+
 import Image from 'next/image';
 import carsData from '@/data/template.json';
 import { Navigation } from "@/components/navigation";
@@ -32,7 +34,6 @@ type CarDetail = {
   garage_kept: boolean;
 };
 
-// Helper function to get car by ID
 function getCarById(id: string): CarDetail | null {
   const car = Object.values(carsData).find(car => car.id === id);
   return car ? car as CarDetail : null;
