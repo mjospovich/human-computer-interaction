@@ -1,4 +1,4 @@
-// src/app/popularno/page.tsx
+// Popularno Page - showing popular car ads with sorting options
 
 "use client";
 
@@ -49,7 +49,7 @@ export default function PopularnoPage() {
     setVisibleCards(visibleCards + 9);
   };
 
-  // Add this container class for consistency
+  // container class for consistency
   const containerClass = "w-full max-w-80 md-grid:w-auto md-grid:max-w-xl mx-auto lg-grid:max-w-4xl";
 
   return (
@@ -96,7 +96,7 @@ export default function PopularnoPage() {
           />
         </div>
 
-        {/* Grid Container with explicit width */}
+        {/* Grid Container - Car cards here*/}
         <div className="w-full grid grid-cols-1 md-grid:grid-cols-2 lg-grid:grid-cols-3 gap-4 md-grid:gap-4 lg-grid:gap-4 mt-2">
           {renderCarCards(visibleCards)}
         </div>

@@ -1,3 +1,5 @@
+// not used at the moment
+
 "use client";
 
 import { Navigation } from "@/components/navigation";

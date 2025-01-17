@@ -1,4 +1,4 @@
-// src/components/CarCard.tsx
+// Car Card component for displaying car details in a grid
 
 import Link from 'next/link';
 import Image from 'next/image';

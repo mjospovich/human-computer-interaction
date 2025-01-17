@@ -6,6 +6,8 @@ import { Navigation } from "@/components/navigation";
 import ListingToScoreImg from "@/assets/listingToScoreImg.svg";
 import { Toast } from "@/components/toast";
 import { useAuth } from "@/context/authContext";
+import { ArrowIcon } from "@/components/icons/arrowIcon";
+import { CheckmarkIcon } from "@/components/icons/checkmarkIcon";
 
 export default function ProcijeniVrijednost() {
   const [inputValue, setInputValue] = useState('');
@@ -24,7 +26,7 @@ export default function ProcijeniVrijednost() {
 
   // Add URL formatting function
   const formatUrl = (url: string) => {
-    if (!isInputFocused && url.includes('auti/')) {
+    if (!isInputFocused && isValidUrl && url.includes('auti/')) {
       const startIndex = url.indexOf('auti/');
       const endIndex = url.indexOf('-oglas');
       const extractedText = endIndex !== -1 
@@ -61,6 +63,8 @@ export default function ProcijeniVrijednost() {
     }
   }, [showLoginToast, setShowLoginToast]);
 
+  const isValidUrl = inputValue.startsWith('https://www.njuskalo.hr/auti/') && !error;
+
   return (
     <main className="flex min-h-screen flex-col items-center justify-center md:justify-center p-10">
       {showLoginToast && (
@@ -86,8 +90,8 @@ export default function ProcijeniVrijednost() {
       <div className={`mb-1 fixed bottom-2 max-w-lg md:relative md:bottom-0 md:max-w-2xl w-11/12 `}>
           <div className="relative">
           <input
-            className={`shadow-sm appearance-none border rounded-full w-full py-4 px-6 leading-tight focus:outline-none focus:shadow-outline placeholder-secondary-text-black ${
-              isInputFocused ? 'text-main-text-black' : 'text-brand'
+            className={`shadow-sm appearance-none border rounded-full w-full py-4 ${isValidUrl ? 'pl-12' : 'pl-6'} pr-6 leading-tight focus:outline-none focus:shadow-outline placeholder-secondary-text-black ${
+              isInputFocused || !isValidUrl ? 'text-main-text-black' : 'text-main-text-black'
             }`}
             id="entry"
             type="text"
@@ -97,20 +101,17 @@ export default function ProcijeniVrijednost() {
             onFocus={() => setIsInputFocused(true)}
             onBlur={() => setIsInputFocused(false)}
           />
+          {isValidUrl && (
+            <div className="absolute left-4 top-1/2 transform -translate-y-1/2 text-green-500">
+              <CheckmarkIcon />
+            </div>
+          )}
             <button
               className="absolute right-3 top-1/2 transform -translate-y-1/2 bg-brand hover:bg-brand-light hover:text-main-text-black text-white font-bold p-3 rounded-full focus:outline-none focus:shadow-outline flex items-center justify-center"
               type="button"
               onClick={handleButtonClick}
             >
-              <svg
-                className="w-4 h-4 transform rotate-[-90deg]"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 12h14M12 5l7 7-7 7"></path>
-              </svg>
+              <ArrowIcon className="w-4 h-4 transform rotate-[-90deg]" />
             </button>
           </div>
           {error && (
@@ -120,7 +121,6 @@ export default function ProcijeniVrijednost() {
           )}
         </div>
 
-      {/* Replace button with Link */}
       <Link href="/manualni-unos" className="md:mt-3 py-3 px-4 bg-brand-light text-main-text-black rounded-full text-sm hover:bg-brand hover:text-white">
         Manualni unos
       </Link>

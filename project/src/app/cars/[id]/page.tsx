@@ -86,7 +86,7 @@ export default function CarDetailPage({ params }: { params: { id: string } }) {
           </div>
         </div>
 
-        {/* Right Column - Fixed */}
+        {/* Right Column - fixed */}
         <div className="w-full md:w-1/3">
           <div className="sticky top-12 bg-container-white p-4 rounded-lg shadow space-y-4">
             {/* Title Section with Logo */}
@@ -113,13 +113,13 @@ export default function CarDetailPage({ params }: { params: { id: string } }) {
               <p className="text-4xl font-bold text-main-text-black">€ {car.price.toLocaleString()}</p>
             </div>
   
-            {/* Rating Section - Replace the placeholder */}
+            {/* Rating Section - when rating system is created */}
             <div className="flex items-center justify-between">
               <span className="text-secondary-text-black">Ocijena vrijednosti:</span>
               <Rating value={23} size="md" />
             </div>
   
-            {/* Replace Link Placeholder with actual link */}
+            {/* Link - update later */}
             <div className="mt-4  bg-gray-50 rounded">
               <p className="text-secondary-text-black">
                 {' '}
@@ -140,6 +140,7 @@ export default function CarDetailPage({ params }: { params: { id: string } }) {
   );
 }
 
+// chatgpt code - not needed for now
 // Add this for when we switch to database
 // export async function generateStaticParams() {
 //   // This will be replaced with a database query later

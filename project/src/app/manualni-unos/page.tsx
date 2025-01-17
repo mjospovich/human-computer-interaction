@@ -1,3 +1,5 @@
+//manualni unos - form page for manual car data input
+
 "use client";
 
 import { Navigation } from "@/components/navigation";
@@ -19,6 +21,7 @@ export default function ManualniUnosPage() {
     mileage: ''
   });
   
+  // prevent data loss on page refresh
   // Load saved form data on component mount
   useEffect(() => {
     const savedData = localStorage.getItem('manualInputFormData');
@@ -56,11 +59,11 @@ export default function ManualniUnosPage() {
   const handleSubmit = () => {
     if (validateForm()) {
       console.log('All fields are filled');
-      // Add submission logic here
+      // Logic will be added later...
     }
   };
 
-  // Check if any field has data
+  // Check if any field has data - to show reset button
   const hasAnyData = Object.values(formData).some(value => value !== '');
 
   // Reset all form data
@@ -87,7 +90,6 @@ export default function ManualniUnosPage() {
       <Navigation />
       
       <div className="w-full max-w-2xl mt-8">
-        {/* Updated header section */}
         <div className="text-center mb-8">
           <h1 className="text-2xl md:text-3xl font-bold text-main-text-black mb-3">
             Procijeni svoj automobil!
@@ -98,7 +100,7 @@ export default function ManualniUnosPage() {
         </div>
 
         <div className="bg-container-white p-6 rounded-2xl shadow relative">
-          {/* Add reset button */}
+          {/* Add reset button if there is any data */}
           {hasAnyData && (
             <button
               onClick={handleReset}
@@ -108,7 +110,6 @@ export default function ManualniUnosPage() {
             </button>
           )}
 
-          {/* Add padding-top to create space */}
           <div className="pt-4">
             <FormInput
               label="Marka Automobila"
@@ -134,7 +135,6 @@ export default function ManualniUnosPage() {
               error={showErrors && errors.type ? "Polje je prazno!" : ""}
             />
 
-            {/* Car specifications */}
             <FormButtonGroup
               label="Broj Vrata"
               options={['3', '4', '5', '7']}
@@ -201,7 +201,6 @@ export default function ManualniUnosPage() {
             />
           </div>
 
-          {/* Add submit button and error message at the bottom */}
           <div className="mt-8 space-y-4 flex flex-col items-center">
             <button
               onClick={handleSubmit}
