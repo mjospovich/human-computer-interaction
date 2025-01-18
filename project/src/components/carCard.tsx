@@ -37,6 +37,9 @@ const getTextClass = (text: string) => {
   return 'text-sm';
 };
 
+function getProxiedImageUrl(url: string): string {
+  return `/api/images?url=${encodeURIComponent(url)}`;
+}
 
 export function CarCard({ id, imageUrl, name, price, brand }: CarCardProps) {
   const displayName = truncateText(name);
@@ -45,7 +48,9 @@ export function CarCard({ id, imageUrl, name, price, brand }: CarCardProps) {
   const fallbackImage = '/images/default-car.jpg';
 
   // Validate image URL
-  const validatedImageUrl = imageUrl && imageUrl.startsWith('http') ? imageUrl : fallbackImage;
+  const validatedImageUrl = imageUrl && imageUrl.startsWith('http') 
+    ? getProxiedImageUrl(imageUrl) 
+    : fallbackImage;
 
   return (
     <Link href={`/cars/${id}`} passHref>
