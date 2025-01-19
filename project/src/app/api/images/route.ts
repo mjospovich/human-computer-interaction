@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { imageExistsInCache, cacheImage } from '@/lib/serverImageCache';
 import fs from 'fs';
+import path from 'path';
 
 export async function GET(request: NextRequest) {
   try {
@@ -11,12 +12,17 @@ export async function GET(request: NextRequest) {
       return new NextResponse('Missing URL parameter', { status: 400 });
     }
 
+    //console.log('Processing image request for:', imageUrl);
+
+    // Check cache first
+    const cachedPath = imageExistsInCache(imageUrl);
     let imagePath: string;
 
-    const cachedImagePath = imageExistsInCache(imageUrl);
-    if (typeof cachedImagePath === 'string') {
-      imagePath = cachedImagePath;
+    if (cachedPath) {
+      //console.log('Found in cache:', cachedPath);
+      imagePath = cachedPath;
     } else {
+      //console.log('Caching new image:', imageUrl);
       imagePath = await cacheImage(imageUrl);
     }
 
@@ -26,6 +32,7 @@ export async function GET(request: NextRequest) {
       'Content-Type': 'image/jpeg',
       'Cache-Control': 'public, max-age=604800, stale-while-revalidate=86400',
       'Content-Length': imageBuffer.length.toString(),
+      'Access-Control-Allow-Origin': '*',
     });
 
     return new NextResponse(imageBuffer, {
@@ -34,6 +41,21 @@ export async function GET(request: NextRequest) {
     });
   } catch (error) {
     console.error('Image serving error:', error);
-    return new NextResponse('Error serving image', { status: 500 });
+    
+    // Return default image on error
+    try {
+      const defaultImagePath = path.join(process.cwd(), 'public', 'images', 'default-car.jpg');
+      const defaultImageBuffer = fs.readFileSync(defaultImagePath);
+      
+      return new NextResponse(defaultImageBuffer, {
+        status: 200,
+        headers: {
+          'Content-Type': 'image/jpeg',
+          'Cache-Control': 'public, max-age=604800',
+        },
+      });
+    } catch (fallbackError) {
+      return new NextResponse('Error serving image', { status: 500 });
+    }
   }
 }

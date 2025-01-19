@@ -37,6 +37,7 @@ const getTextClass = (text: string) => {
   return 'text-sm';
 };
 
+// routes image through proxy to avoid CORS issues - enables cache
 function getProxiedImageUrl(url: string): string {
   return `/api/images?url=${encodeURIComponent(url)}`;
 }
