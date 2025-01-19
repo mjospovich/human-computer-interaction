@@ -14,7 +14,7 @@ import type { CacheMetadata } from './types';
 })();
 
 export async function cacheImage(url: string): Promise<string> {
-  const { imagePath, metaPath } = getCachePaths(url);
+  const { imagePath } = getCachePaths(url);
   
   // Check cache and expiry
   if (await isCacheValid(imagePath)) {

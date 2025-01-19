@@ -54,7 +54,7 @@ export async function GET(request: NextRequest) {
           'Cache-Control': 'public, max-age=604800',
         },
       });
-    } catch (fallbackError) {
+    } catch {
       return new NextResponse('Error serving image', { status: 500 });
     }
   }
