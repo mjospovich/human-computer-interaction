@@ -7,4 +7,4 @@ export const config: CacheConfig = {
   cleanupInterval: 24 * 60 * 60 * 1000 // 24 hours
 };
 
-export const CACHE_DIR = process.env.IMAGE_CACHE_DIR || 'images-cache';
+export const CACHE_DIR = 'images-cache';

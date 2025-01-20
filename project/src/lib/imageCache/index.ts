@@ -16,11 +16,6 @@ import type { CacheMetadata } from './types';
 export async function cacheImage(url: string): Promise<string> {
   const { imagePath } = getCachePaths(url);
   
-  // Check cache and expiry
-  if (await isCacheValid(imagePath)) {
-    return imagePath;
-  }
-
   try {
     const controller = new AbortController();
     const timeoutId = setTimeout(() => controller.abort(), config.fetchTimeout);
@@ -36,11 +31,6 @@ export async function cacheImage(url: string): Promise<string> {
 
     if (!response.ok) {
       throw new Error(`Failed to fetch: ${response.statusText}`);
-    }
-
-    const contentLength = response.headers.get('content-length');
-    if (contentLength && parseInt(contentLength) > config.maxFileSize) {
-      throw new Error('File too large');
     }
 
     const buffer = await response.arrayBuffer();
@@ -59,31 +49,6 @@ export async function cacheImage(url: string): Promise<string> {
     console.error('Cache error:', error);
     throw error;
   }
-}
-
-// Setup cleanup interval
-const cleanup = async () => {
-  try {
-    const cacheDir = path.join(process.cwd(), CACHE_DIR);
-    const files = await fs.readdir(cacheDir);
-    
-    for (const file of files) {
-      if (!file.endsWith('.meta')) continue;
-      const imagePath = path.join(cacheDir, file.replace('.meta', ''));
-      if (!(await isCacheValid(imagePath))) {
-        await Promise.all([
-          fs.unlink(imagePath).catch(() => {}),
-          fs.unlink(`${imagePath}.meta`).catch(() => {})
-        ]);
-      }
-    }
-  } catch (error) {
-    console.error('Cleanup error:', error);
-  }
-};
-
-if (process.env.NODE_ENV === 'production') {
-  setInterval(cleanup, config.cleanupInterval);
 }
 
 export { getCachePaths, isCacheValid };
