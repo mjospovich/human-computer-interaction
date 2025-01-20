@@ -3,54 +3,82 @@ import { imageExistsInCache, cacheImage } from '@/lib/serverImageCache';
 import fs from 'fs';
 import path from 'path';
 
-// Add route segment config
 export const dynamic = 'force-dynamic';
 export const runtime = 'nodejs';
 
 export async function GET(request: NextRequest) {
   try {
-    const { searchParams } = new URL(request.url);
-    const imageUrl = searchParams.get('url');
+    const imageUrl = request.nextUrl.searchParams.get('url');
+
+    console.log('Image request:', {
+      url: imageUrl,
+      isVercel: !!process.env.VERCEL,
+      nodeEnv: process.env.NODE_ENV
+    });
 
     if (!imageUrl) {
       throw new Error('Missing URL parameter');
     }
 
     // Validate URL
+    let validatedUrl: URL;
     try {
-      new URL(imageUrl);
+      validatedUrl = new URL(imageUrl);
+      if (!validatedUrl.protocol.startsWith('http')) {
+        throw new Error('Invalid protocol');
+      }
     } catch {
-      throw new Error('Invalid URL');
+      throw new Error('Invalid URL format');
     }
 
-    // Check cache first
-    const cachedPath = imageExistsInCache(imageUrl);
-    let imagePath: string;
+    if (process.env.VERCEL) {
+      const response = await fetch(validatedUrl.toString(), {
+        headers: {
+          'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)'
+        }
+      });
 
-    if (cachedPath) {
-      imagePath = cachedPath;
-    } else {
-      imagePath = await cacheImage(imageUrl);
+      if (!response.ok) {
+        throw new Error(`Fetch failed: ${response.status}`);
+      }
+
+      return new NextResponse(response.body, {
+        status: 200,
+        headers: {
+          'Content-Type': response.headers.get('Content-Type') || 'image/jpeg',
+          'Cache-Control': 'public, max-age=604800, stale-while-revalidate=86400',
+          'Access-Control-Allow-Origin': '*',
+          'X-Content-Type-Options': 'nosniff',
+          'Vary': 'Accept'
+        }
+      });
+    }
+
+    // Local development: Use file cache
+    let imagePath = imageExistsInCache(validatedUrl.toString());
+    
+    if (!imagePath) {
+      imagePath = await cacheImage(validatedUrl.toString());
     }
 
     const imageBuffer = fs.readFileSync(imagePath);
     
-    // Improve headers
-    const headers = new Headers({
-      'Content-Type': 'image/jpeg',
-      'Cache-Control': 'public, max-age=604800, stale-while-revalidate=86400',
-      'Content-Length': imageBuffer.length.toString(),
-      'Access-Control-Allow-Origin': '*',
-      'X-Content-Type-Options': 'nosniff',
-      'Vary': 'Accept'
+    return new NextResponse(imageBuffer, {
+      status: 200,
+      headers: {
+        'Content-Type': 'image/jpeg',
+        'Cache-Control': 'public, max-age=604800, stale-while-revalidate=86400',
+        'Content-Length': imageBuffer.length.toString(),
+        'Access-Control-Allow-Origin': '*',
+        'X-Content-Type-Options': 'nosniff',
+        'Vary': 'Accept'
+      }
     });
-
-    return new NextResponse(imageBuffer, { status: 200, headers });
 
   } catch (error) {
     console.error('Image serving error:', error);
     
-    // Return default image with proper headers
+    // Return default image for 400/500 errors
     try {
       const defaultImagePath = path.join(process.cwd(), 'public', 'images', 'default-car.jpg');
       const defaultImageBuffer = fs.readFileSync(defaultImagePath);
