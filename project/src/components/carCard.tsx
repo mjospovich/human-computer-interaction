@@ -39,13 +39,11 @@ const getTextClass = (text: string) => {
 
 // Improve URL validation and proxying
 function getProxiedImageUrl(url: string): string {
-  try {
-    // Check if URL is valid
-    new URL(url);
-    return `/api/images?url=${encodeURIComponent(url)}`;
-  } catch {
+  if (!url || !url.startsWith('http')) {
     return '/images/default-car.jpg';
   }
+  // Double encode the URL to handle special characters
+  return `/api/images?url=${encodeURIComponent(url)}`;
 }
 
 export function CarCard({ id, imageUrl, name, price, brand }: CarCardProps) {
@@ -56,9 +54,8 @@ export function CarCard({ id, imageUrl, name, price, brand }: CarCardProps) {
 
   // Improve image URL validation
   const validatedImageUrl = useMemo(() => {
-    if (!imageUrl) return fallbackImage;
     try {
-      return imageUrl.startsWith('http') ? getProxiedImageUrl(imageUrl) : fallbackImage;
+      return imageUrl ? getProxiedImageUrl(imageUrl) : fallbackImage;
     } catch {
       return fallbackImage;
     }

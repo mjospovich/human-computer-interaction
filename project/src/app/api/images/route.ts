@@ -8,67 +8,45 @@ export const runtime = 'nodejs';
 
 export async function GET(request: NextRequest) {
   try {
-    const imageUrl = request.nextUrl.searchParams.get('url');
-
-    console.log('Image request:', {
-      url: imageUrl,
+    // Get the raw URL string first
+    const rawUrl = request.nextUrl.searchParams.get('url');
+    
+    console.log('Image proxy request:', {
+      rawUrl,
       isVercel: !!process.env.VERCEL,
-      nodeEnv: process.env.NODE_ENV
+      nodeEnv: process.env.NODE_ENV,
+      headers: Object.fromEntries(request.headers)
     });
 
-    if (!imageUrl) {
+    if (!rawUrl) {
       throw new Error('Missing URL parameter');
     }
 
-    // Validate URL
-    let validatedUrl: URL;
-    try {
-      validatedUrl = new URL(imageUrl);
-      if (!validatedUrl.protocol.startsWith('http')) {
-        throw new Error('Invalid protocol');
+    // Decode the URL if it's encoded
+    const decodedUrl = decodeURIComponent(rawUrl);
+
+    // Basic URL validation
+    if (!decodedUrl.startsWith('http')) {
+      throw new Error('Invalid URL protocol');
+    }
+
+    const response = await fetch(decodedUrl, {
+      headers: {
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)'
       }
-    } catch {
-      throw new Error('Invalid URL format');
+    });
+
+    if (!response.ok) {
+      throw new Error(`Fetch failed: ${response.status} ${response.statusText}`);
     }
 
-    if (process.env.VERCEL) {
-      const response = await fetch(validatedUrl.toString(), {
-        headers: {
-          'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)'
-        }
-      });
-
-      if (!response.ok) {
-        throw new Error(`Fetch failed: ${response.status}`);
-      }
-
-      return new NextResponse(response.body, {
-        status: 200,
-        headers: {
-          'Content-Type': response.headers.get('Content-Type') || 'image/jpeg',
-          'Cache-Control': 'public, max-age=604800, stale-while-revalidate=86400',
-          'Access-Control-Allow-Origin': '*',
-          'X-Content-Type-Options': 'nosniff',
-          'Vary': 'Accept'
-        }
-      });
-    }
-
-    // Local development: Use file cache
-    let imagePath = imageExistsInCache(validatedUrl.toString());
+    const contentType = response.headers.get('Content-Type');
     
-    if (!imagePath) {
-      imagePath = await cacheImage(validatedUrl.toString());
-    }
-
-    const imageBuffer = fs.readFileSync(imagePath);
-    
-    return new NextResponse(imageBuffer, {
+    return new NextResponse(response.body, {
       status: 200,
       headers: {
-        'Content-Type': 'image/jpeg',
+        'Content-Type': contentType || 'image/jpeg',
         'Cache-Control': 'public, max-age=604800, stale-while-revalidate=86400',
-        'Content-Length': imageBuffer.length.toString(),
         'Access-Control-Allow-Origin': '*',
         'X-Content-Type-Options': 'nosniff',
         'Vary': 'Accept'
@@ -76,27 +54,10 @@ export async function GET(request: NextRequest) {
     });
 
   } catch (error) {
-    console.error('Image serving error:', error);
-    
-    // Return default image for 400/500 errors
-    try {
-      const defaultImagePath = path.join(process.cwd(), 'public', 'images', 'default-car.jpg');
-      const defaultImageBuffer = fs.readFileSync(defaultImagePath);
-      
-      return new NextResponse(defaultImageBuffer, {
-        status: 200,
-        headers: {
-          'Content-Type': 'image/jpeg',
-          'Cache-Control': 'public, max-age=604800',
-          'Content-Length': defaultImageBuffer.length.toString(),
-          'X-Content-Type-Options': 'nosniff'
-        },
-      });
-    } catch {
-      return new NextResponse('Error serving image', { 
-        status: 500,
-        headers: { 'Content-Type': 'text/plain' }
-      });
-    }
+    console.error('Image proxy error:', error);
+    return new NextResponse('Error fetching image', { 
+      status: 500,
+      headers: { 'Content-Type': 'text/plain' }
+    });
   }
 }
