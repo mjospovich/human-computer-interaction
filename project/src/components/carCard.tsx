@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import { getBrandLogo } from '@/data/brandLogos';
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 
 type CarCardProps = {
   id: string;
@@ -37,9 +37,15 @@ const getTextClass = (text: string) => {
   return 'text-sm';
 };
 
-// routes image through proxy to avoid CORS issues - enables cache
+// Improve URL validation and proxying
 function getProxiedImageUrl(url: string): string {
-  return `/api/images?url=${encodeURIComponent(url)}`;
+  try {
+    // Check if URL is valid
+    new URL(url);
+    return `/api/images?url=${encodeURIComponent(url)}`;
+  } catch {
+    return '/images/default-car.jpg';
+  }
 }
 
 export function CarCard({ id, imageUrl, name, price, brand }: CarCardProps) {
@@ -48,10 +54,15 @@ export function CarCard({ id, imageUrl, name, price, brand }: CarCardProps) {
   const [imageError, setImageError] = useState(false);
   const fallbackImage = '/images/default-car.jpg';
 
-  // Validate image URL
-  const validatedImageUrl = imageUrl && imageUrl.startsWith('http') 
-    ? getProxiedImageUrl(imageUrl) 
-    : fallbackImage;
+  // Improve image URL validation
+  const validatedImageUrl = useMemo(() => {
+    if (!imageUrl) return fallbackImage;
+    try {
+      return imageUrl.startsWith('http') ? getProxiedImageUrl(imageUrl) : fallbackImage;
+    } catch {
+      return fallbackImage;
+    }
+  }, [imageUrl]);
 
   return (
     <Link href={`/cars/${id}`} passHref>
@@ -67,6 +78,7 @@ export function CarCard({ id, imageUrl, name, price, brand }: CarCardProps) {
             className="object-cover transition-opacity duration-300 group-hover:opacity-10 group-hover:blur-sm"
             priority={false}
             onError={() => setImageError(true)}
+            loading="lazy"
           />
           {/* Image Hover Overlay Text */}
           <div className="absolute inset-0 flex items-center justify-center opacity-0 transition-opacity duration-800 group-hover:opacity-100">
