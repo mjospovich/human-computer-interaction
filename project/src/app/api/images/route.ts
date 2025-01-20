@@ -3,6 +3,10 @@ import { imageExistsInCache, cacheImage } from '@/lib/serverImageCache';
 import fs from 'fs';
 import path from 'path';
 
+// Add route segment config
+export const dynamic = 'force-dynamic';
+export const runtime = 'nodejs';
+
 export async function GET(request: NextRequest) {
   try {
     const { searchParams } = new URL(request.url);
