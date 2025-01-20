@@ -59,7 +59,7 @@ export default function PopularnoPage() {
       {/* Title and Description */}
       <div className="text-center">
         <h1 className="text-xl sm-grid:text-2xl md-grid:text-3xl font-bold text-main-text-black mb-4">
-          TEST Procijeni Popularne Oglase
+          Procijeni Popularne Oglase
         </h1>
         <p className="text-xs sm-grid:text-sm text-secondary-text-black w-2/3 mx-auto">
           Ovo su oglasi koje su korisnici najčešće pretraživali u posljednjih mjesec dana.
