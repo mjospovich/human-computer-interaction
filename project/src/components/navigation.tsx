@@ -36,70 +36,72 @@ export function Navigation() {
 
   return (
     <header className={`bg-background fixed top-0 left-0 w-full flex justify-between items-center p-4 z-50 ${isOpen ? "bg-container-white shadow-md" : ""}`}>
-      {/* Logo Section */}
-      <div className="text-lg font-bold">
-        <Link href="/">
-          <Logo className="h-5 w-auto" alt="My Logo" />
-        </Link>
-      </div>
+      <div className="w-full max-w-7xl mx-auto flex justify-between items-center">
+        {/* Logo Section */}
+        <div className="text-lg font-bold">
+          <Link href="/">
+            <Logo className="h-5 w-auto" alt="My Logo" />
+          </Link>
+        </div>
 
-      {/* Desktop Navigation */}
-      <div className="hidden md:flex items-center space-x-4">
-        {navigationLinks.map((link, index) => (
-          <Link 
-            key={index}
-            href={link.path} 
-            className={pathname === link.path ? "font-bold text-main-text-black" : "text-main-text-black"}
-          >
-            {link.title}
-          </Link>
-        ))}
-        {isAuthenticated ? (
-          <Link href="/profil">
-            <ProfileAvatar email={user?.email || ''} size="sm" />
-          </Link>
-        ) : (
-          <Link href="/prijavise" className="text-main-text-black">
-            Prijavi se
-          </Link>
+        {/* Desktop Navigation */}
+        <div className="hidden md:flex items-center space-x-4">
+          {navigationLinks.map((link, index) => (
+            <Link 
+              key={index}
+              href={link.path} 
+              className={pathname === link.path ? "font-bold text-main-text-black" : "text-main-text-black"}
+            >
+              {link.title}
+            </Link>
+          ))}
+          {isAuthenticated ? (
+            <Link href="/profil">
+              <ProfileAvatar email={user?.email || ''} size="sm" />
+            </Link>
+          ) : (
+            <Link href="/prijavise" className="text-main-text-black">
+              Prijavi se
+            </Link>
+          )}
+        </div>
+
+        {/* Mobile Menu Button - Only show if not authenticated */}
+        {!isAuthenticated && (
+          <div className="md:hidden">
+            <button
+              onClick={() => setIsOpen(!isOpen)}
+              type="button"
+              className="inline-flex items-center justify-center p-2 rounded-md text-main-text-black hover:text-secondary-text-black focus:outline-none"
+              aria-controls="mobile-menu"
+              aria-expanded={isOpen}
+            >
+              <span className="sr-only">Open main menu</span>
+              {!isOpen ? (
+                <svg className="block h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 24 24" stroke="currentColor" aria-hidden="true">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16m-7 6h7" />
+                </svg>
+              ) : (
+                <svg className="block h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 24 24" stroke="currentColor" aria-hidden="true">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              )}
+            </button>
+          </div>
+        )}
+
+        {/* Mobile Avatar - Only show if authenticated */}
+        {isAuthenticated && (
+          <div className="md:hidden">
+            <button
+              onClick={() => setIsOpen(!isOpen)}
+              className="flex items-center justify-center"
+            >
+              <ProfileAvatar email={user?.email || ''} size="sm" />
+            </button>
+          </div>
         )}
       </div>
-
-      {/* Mobile Menu Button - Only show if not authenticated */}
-      {!isAuthenticated && (
-        <div className="md:hidden">
-          <button
-            onClick={() => setIsOpen(!isOpen)}
-            type="button"
-            className="inline-flex items-center justify-center p-2 rounded-md text-main-text-black hover:text-secondary-text-black focus:outline-none"
-            aria-controls="mobile-menu"
-            aria-expanded={isOpen}
-          >
-            <span className="sr-only">Open main menu</span>
-            {!isOpen ? (
-              <svg className="block h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 24 24" stroke="currentColor" aria-hidden="true">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16m-7 6h7" />
-              </svg>
-            ) : (
-              <svg className="block h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 24 24" stroke="currentColor" aria-hidden="true">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
-              </svg>
-            )}
-          </button>
-        </div>
-      )}
-
-      {/* Mobile Avatar - Only show if authenticated */}
-      {isAuthenticated && (
-        <div className="md:hidden">
-          <button
-            onClick={() => setIsOpen(!isOpen)}
-            className="flex items-center justify-center"
-          >
-            <ProfileAvatar email={user?.email || ''} size="sm" />
-          </button>
-        </div>
-      )}
 
       {/* Mobile Menu */}
       {isOpen && (

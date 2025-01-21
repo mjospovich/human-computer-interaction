@@ -82,7 +82,7 @@ export default function ProcijeniVrijednost() {
           1. Kopiraj link oglasa automobila s jednog od podržanih oglasnika (Njuškalo).
         </p>
         <p className="text-secondary-text-black text-left text-sm">
-          2. Zalijepi link u polje ili manunalno unesi podatke za procjenu vrijednosti automobila.
+          2. Zalijepi link u polje za ocjenu oglasa ili unesi podatke za procjenu vrijednosti automobila.
         </p>
       </div>
 
@@ -95,7 +95,7 @@ export default function ProcijeniVrijednost() {
             }`}
             id="entry"
             type="text"
-            placeholder="Zalijepi link"
+            placeholder="Zalijepi link oglasa"
             value={isInputFocused ? inputValue : formatUrl(inputValue)}
             onChange={handleInputChange}
             onFocus={() => setIsInputFocused(true)}
@@ -122,12 +122,12 @@ export default function ProcijeniVrijednost() {
         </div>
 
       <Link href="/manualni-unos" className="md:mt-3 py-3 px-4 bg-brand-light text-main-text-black rounded-full text-sm hover:bg-brand hover:text-white">
-        Manualni unos
+        Unesi podatke
       </Link>
 
       <p className="mt-3 text-xs text-secondary-text-black text-center">
         <Link href="/popularno" legacyBehavior>
-          <a className="hover:underline">Nemam Link?</a>
+          <a className="hover:underline">Ocjene popularnih oglasa</a>
         </Link>
       </p>
       
