@@ -1,0 +1,64 @@
+{
+    "id": "45640449",
+    "img": "https://www.njuskalo.hr/image-w920x690/auti/alfa-romeo-giulietta-1.6-multijet-16v-jtd-slika-235986146.jpg",
+    "title": "Alfa Romeo Giulietta 1,6 Multijet 16V JTD",
+    "price": 11890.0,
+    "year": 2017,
+    "mileage": 92000,
+    "engine_power": 88,
+    "fuel_type": "Diesel",
+    "transmission": "Automatski",
+    "location": "Grad Zagreb, Novi Zagreb - Istok, Travno",
+    "description": "Opis oglasa\n    \n        Alu 16 \nAuto klima \nNavi \nServisna knjiga \nMFV\nMoguce karticno placanje ( cijena veca u tom slucaju )",
+    "registration_until": null,
+    "features": {
+        "Mogućnost plaćanja": [
+            "gotovina",
+            "kredit",
+            "leasing"
+        ],
+        "Dodatni podaci": [
+            "Oblik karoserije: hatchback",
+            "Broj vrata: 5",
+            "Broj sjedala: 5",
+            "Boja: tamno siva",
+            "Metalik boja: Metalik",
+            "Vrsta pogona: prednji"
+        ],
+        "Dodatna oprema vozila": [
+            "Brisač stražnjeg stakla",
+            "Brojač okretaja",
+            "Treći stražnji naslon za glavu",
+            "Tonizirana stakla",
+            "Filter čestica",
+            "zatamnjena stakla"
+        ],
+        "Sigurnost": [
+            "ABS (sustav protiv blokiranja kočnica)",
+            "ABS",
+            "Zračni jastuci za vozača i suvozača",
+            "Zračni jastuci: vozački + suvozački"
+        ],
+        "Udobnost": [
+            "Klima uređaj",
+            "Klimatizacija: ručna"
+        ],
+        "Sigurnost protiv krađe": [
+            "Elektronska blokada motora",
+            "blokada motora"
+        ]
+    },
+    "brand": "Alfa Romeo",
+    "model": "Giulietta",
+    "model_type": "1,6 Multijet 16V",
+    "model_year": "2016.",
+    "in_traffic_from": null,
+    "engine_displacement": "1.598 cm3",
+    "fuel_consumption": null,
+    "co2_emission": null,
+    "eco_category": null,
+    "condition": "rabljeno",
+    "service_book": true,
+    "video_call_available": false,
+    "garage_kept": false
+}

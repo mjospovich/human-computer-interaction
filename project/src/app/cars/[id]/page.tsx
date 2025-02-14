@@ -6,6 +6,7 @@ import { Navigation } from "@/components/navigation";
 import { getBrandLogo } from '@/data/brandLogos';
 import { Rating } from "@/components/rating";
 import { notFound } from 'next/navigation';
+import test1car from '@/data/test1car.json';
 
 // Move type definition to a separate types file later
 type CarDetail = {
@@ -35,6 +36,12 @@ type CarDetail = {
 };
 
 function getCarById(id: string): CarDetail | null {
+  // First check if it's the test car from URL input
+  if (id === test1car.id) {
+    return test1car as CarDetail;
+  }
+  
+  // If not found in test1car, look in template data
   const car = Object.values(carsData).find(car => car.id === id);
   return car ? car as CarDetail : null;
 }

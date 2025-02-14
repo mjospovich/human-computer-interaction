@@ -8,12 +8,15 @@ import { Toast } from "@/components/toast";
 import { useAuth } from "@/context/authContext";
 import { ArrowIcon } from "@/components/icons/arrowIcon";
 import { CheckmarkIcon } from "@/components/icons/checkmarkIcon";
+import { useRouter } from 'next/navigation';
+import test1car from '@/data/test1car.json';
 
 export default function ProcijeniVrijednost() {
   const [inputValue, setInputValue] = useState('');
   const [error, setError] = useState('');
   const [isInputFocused, setIsInputFocused] = useState(false);
   const { showLoginToast, setShowLoginToast } = useAuth();
+  const router = useRouter();
 
   // Validation function for input URL
   const validateInput = (value: string) => {
@@ -47,9 +50,8 @@ export default function ProcijeniVrijednost() {
   // Handle button click
   const handleButtonClick = () => {
     if (error === '' && inputValue !== '') {
-      // Proceed with valid URL
-      console.log('Valid URL:', inputValue);
-      // Add your submission logic here
+      // Redirect to car details page using test1car.id
+      router.push(`/cars/${test1car.id}`);
     }
   };
 
