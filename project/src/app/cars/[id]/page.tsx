@@ -5,7 +5,7 @@ import carsData from '@/data/template.json';
 import { Navigation } from "@/components/navigation";
 import { getBrandLogo } from '@/data/brandLogos';
 import { Rating } from "@/components/rating";
-import { notFound } from 'next/navigation';
+import { redirect } from 'next/navigation';
 import test1car from '@/data/test1car.json';
 
 // Move type definition to a separate types file later
@@ -50,7 +50,7 @@ export default function CarDetailPage({ params }: { params: { id: string } }) {
   const car = getCarById(params.id);
 
   if (!car) {
-    notFound();
+    redirect('/404'); // Redirect to 404 page if car not found
   }
 
   return (
