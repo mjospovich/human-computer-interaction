@@ -10,6 +10,7 @@ import { ArrowIcon } from "@/components/icons/arrowIcon";
 import { CheckmarkIcon } from "@/components/icons/checkmarkIcon";
 import { useRouter } from 'next/navigation';
 import test1car from '@/data/test1car.json';
+import Image from 'next/image';
 
 export default function ProcijeniVrijednost() {
   const [inputValue, setInputValue] = useState('');
@@ -18,24 +19,34 @@ export default function ProcijeniVrijednost() {
   const { showLoginToast, setShowLoginToast } = useAuth();
   const router = useRouter();
 
-  // Validation function for input URL
+  //validation function for both Njuskalo and Index
   const validateInput = (value: string) => {
-    if (!value.startsWith('https://www.njuskalo.hr/auti/')) {
+    const isNjuskaloUrl = value.startsWith('https://www.njuskalo.hr/auti/');
+    const isIndexUrl = value.startsWith('https://www.index.hr/oglasi/auto-moto/osobni-automobili/oglas/');
+    
+    if (!isNjuskaloUrl && !isIndexUrl) {
       setError('Uneseni link ne izgleda kao oglas automobila!');
     } else {
       setError('');
     }
   };
 
-  // Add URL formatting function
+  // Updated URL formatting function
   const formatUrl = (url: string) => {
-    if (!isInputFocused && isValidUrl && url.includes('auti/')) {
-      const startIndex = url.indexOf('auti/');
-      const endIndex = url.indexOf('-oglas');
-      const extractedText = endIndex !== -1 
-        ? url.substring(startIndex + 5, endIndex)
-        : url.substring(startIndex + 5);
-      return extractedText.replace(/-/g, ' ');
+    if (!isInputFocused && isValidUrl) {
+      if (url.includes('njuskalo.hr/auti/')) {
+        const startIndex = url.indexOf('auti/');
+        const endIndex = url.indexOf('-oglas');
+        const extractedText = endIndex !== -1 
+          ? url.substring(startIndex + 5, endIndex)
+          : url.substring(startIndex + 5);
+        return extractedText.replace(/-/g, ' ');
+      } else if (url.includes('index.hr/oglasi/')) {
+        const startIndex = url.indexOf('oglas/');
+        const endIndex = url.lastIndexOf('/');
+        const extractedText = url.substring(startIndex + 6, endIndex);
+        return extractedText.replace(/-/g, ' ');
+      }
     }
     return url;
   };
@@ -65,7 +76,45 @@ export default function ProcijeniVrijednost() {
     }
   }, [showLoginToast, setShowLoginToast]);
 
-  const isValidUrl = inputValue.startsWith('https://www.njuskalo.hr/auti/') && !error;
+  // Updated URL validation check
+  const isValidUrl = (
+    inputValue.startsWith('https://www.njuskalo.hr/auti/') || 
+    inputValue.startsWith('https://www.index.hr/oglasi/auto-moto/osobni-automobili/oglas/')
+  ) && !error;
+
+  const getLogoComponent = () => {
+    if (!isValidUrl) return null;
+    
+    if (inputValue.startsWith('https://www.njuskalo.hr/')) {
+      return (
+        <div className="absolute left-4 top-1/2 transform -translate-y-1/2">
+          <Image
+            src={'/images/njuskalo-logo.png'}  
+            alt="Njuškalo"
+            width={20}
+            height={20}
+            className="object-contain"
+          />
+        </div>
+      );
+    }
+    
+    if (inputValue.startsWith('https://www.index.hr/')) {
+      return (
+        <div className="absolute left-4 top-1/2 transform -translate-y-1/2">
+          <Image
+            src={'/images/index-logo.png'}  
+            alt="Index"
+            width={20}
+            height={20}
+            className="object-contain"
+          />
+        </div>
+      );
+    }
+    
+    return null;
+  };
 
   return (
     <main className="flex min-h-screen flex-col items-center justify-center md:justify-center p-10">
@@ -81,7 +130,7 @@ export default function ProcijeniVrijednost() {
       <div className="mb-4 text-center w-full max-w-xl">
         <ListingToScoreImg className="mb-3 md:mb-0 mx-auto w-2/3 md:w-1/2" />
         <p className="text-secondary-text-black text-left mb-2 text-sm">
-          1. Kopiraj link oglasa automobila s jednog od podržanih oglasnika (Njuškalo).
+          1. Kopiraj link oglasa automobila s jednog od podržanih oglasnika (Njuškalo, IndexOglasi).
         </p>
         <p className="text-secondary-text-black text-left text-sm">
           2. Zalijepi link u polje za ocjenu oglasa ili unesi podatke za procjenu vrijednosti automobila.
@@ -103,11 +152,7 @@ export default function ProcijeniVrijednost() {
             onFocus={() => setIsInputFocused(true)}
             onBlur={() => setIsInputFocused(false)}
           />
-          {isValidUrl && (
-            <div className="absolute left-4 top-1/2 transform -translate-y-1/2 text-green-500">
-              <CheckmarkIcon />
-            </div>
-          )}
+          {getLogoComponent()}
             <button
               className="absolute right-3 top-1/2 transform -translate-y-1/2 bg-brand hover:bg-brand-light hover:text-main-text-black text-white font-bold p-3 rounded-full focus:outline-none focus:shadow-outline flex items-center justify-center"
               type="button"
