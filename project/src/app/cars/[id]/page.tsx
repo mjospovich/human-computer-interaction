@@ -1,3 +1,5 @@
+"use client";
+
 //car id page - showing car details and rating 
 
 import Image from 'next/image';
@@ -5,8 +7,10 @@ import carsData from '@/data/template.json';
 import { Navigation } from "@/components/navigation";
 import { getBrandLogo } from '@/data/brandLogos';
 import { Rating } from "@/components/rating";
-import { redirect } from 'next/navigation';
 import test1car from '@/data/test1car.json';
+import { useCarData } from '@/context/carDataContext';
+import { useState, useEffect } from 'react';
+import { LoadingWheel } from "@/components/loadingWheel";
 
 // Move type definition to a separate types file later
 type CarDetail = {
@@ -35,24 +39,71 @@ type CarDetail = {
   garage_kept: boolean;
 };
 
-function getCarById(id: string): CarDetail | null {
-  // First check if it's the test car from URL input
-  if (id === test1car.id) {
-    return test1car as CarDetail;
-  }
-  
-  // If not found in test1car, look in template data
-  const car = Object.values(carsData).find(car => car.id === id);
-  return car ? car as CarDetail : null;
-}
-
 export default function CarDetailPage({ params }: { params: { id: string } }) {
-  const car = getCarById(params.id);
+  const { getScrapedCar } = useCarData();
+  const [car, setCar] = useState<CarDetail | null>(null);
+  
+  useEffect(() => {
+    const loadCarData = () => {
+      console.log('Loading car data for ID:', params.id);
+      
+      // First check context
+      const scrapedCar = getScrapedCar(params.id);
+      if (scrapedCar) {
+        console.log('Found in context:', scrapedCar);
+        setCar(scrapedCar as CarDetail);
+        return;
+      }
+      
+      // Then check localStorage
+      try {
+        const saved = localStorage.getItem('scrapedCars');
+        if (saved) {
+          const savedCars = JSON.parse(saved);
+          console.log('All saved cars:', savedCars);
+          if (savedCars[params.id]) {
+            console.log('Found in localStorage:', savedCars[params.id]);
+            setCar(savedCars[params.id] as CarDetail);
+            return;
+          }
+        }
+      } catch (error) {
+        console.error('Error reading from localStorage:', error);
+      }
+      
+      // Then check test car
+      if (params.id === test1car.id) {
+        console.log('Found in test1car');
+        setCar(test1car as CarDetail);
+        return;
+      }
+      
+      // Finally check template data
+      const templateCar = Object.values(carsData).find(car => car.id === params.id);
+      console.log('Found in template data:', templateCar);
+      if (templateCar) {
+        setCar(templateCar as CarDetail);
+        return;
+      }
+      
+      // If no car found
+      setCar(null);
+    };
 
+    loadCarData();
+  }, [params.id, getScrapedCar]);
+
+  // Show loading state while car data is being loaded
   if (!car) {
-    redirect('/404'); // Redirect to 404 page if car not found
+    return (
+      <main className="flex min-h-screen flex-col items-center justify-center">
+        <Navigation />
+        <LoadingWheel size="lg" message="Učitavanje podataka..." />
+      </main>
+    );
   }
 
+  // Render car details once data is loaded
   return (
     <main className="flex min-h-screen flex-col items-center p-10">
       <Navigation />

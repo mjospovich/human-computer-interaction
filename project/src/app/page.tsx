@@ -7,10 +7,11 @@ import ListingToScoreImg from "@/assets/listingToScoreImg.svg";
 import { Toast } from "@/components/toast";
 import { useAuth } from "@/context/authContext";
 import { ArrowIcon } from "@/components/icons/arrowIcon";
-import { CheckmarkIcon } from "@/components/icons/checkmarkIcon";
 import { useRouter } from 'next/navigation';
-import test1car from '@/data/test1car.json';
 import Image from 'next/image';
+import { scrapeCarData } from '@/utils/api';
+import { useCarData } from '@/context/carDataContext';
+import { LoadingWheel } from "@/components/loadingWheel";
 
 export default function ProcijeniVrijednost() {
   const [inputValue, setInputValue] = useState('');
@@ -18,6 +19,8 @@ export default function ProcijeniVrijednost() {
   const [isInputFocused, setIsInputFocused] = useState(false);
   const { showLoginToast, setShowLoginToast } = useAuth();
   const router = useRouter();
+  const { addScrapedCar } = useCarData();
+  const [isLoading, setIsLoading] = useState(false);
 
   //validation function for both Njuskalo and Index
   const validateInput = (value: string) => {
@@ -59,10 +62,30 @@ export default function ProcijeniVrijednost() {
   };
 
   // Handle button click
-  const handleButtonClick = () => {
+  const handleButtonClick = async () => {
     if (error === '' && inputValue !== '') {
-      // Redirect to car details page using test1car.id
-      router.push(`/cars/${test1car.id}`);
+      // Check if it's Index Oglasi
+      if (inputValue.startsWith('https://www.index.hr/')) {
+        setError('Index Oglasi trenutno nije podržan. Koristite Njuškalo oglas.');
+        return;
+      }
+
+      try {
+        setIsLoading(true);
+        console.log('Fetching data for URL:', inputValue);
+        const carData = await scrapeCarData(inputValue);
+        console.log('Received car data:', carData);
+        
+        addScrapedCar(carData.id, carData);
+        console.log('Added car to context with ID:', carData.id);
+        
+        router.push(`/cars/${carData.id}`);
+      } catch (err) {
+        console.error('Error fetching car data:', err);
+        setError('Greška pri dohvaćanju podataka. Pokušajte ponovno.');
+      } finally {
+        setIsLoading(false);
+      }
     }
   };
 
@@ -151,15 +174,23 @@ export default function ProcijeniVrijednost() {
             onChange={handleInputChange}
             onFocus={() => setIsInputFocused(true)}
             onBlur={() => setIsInputFocused(false)}
+            disabled={isLoading}
           />
           {getLogoComponent()}
+          {isLoading ? (
+            <div className="absolute right-3 top-1/2 transform -translate-y-1/2">
+              <LoadingWheel size="sm" className="w-8 h-8" />
+            </div>
+          ) : (
             <button
               className="absolute right-3 top-1/2 transform -translate-y-1/2 bg-brand hover:bg-brand-light hover:text-main-text-black text-white font-bold p-3 rounded-full focus:outline-none focus:shadow-outline flex items-center justify-center"
               type="button"
               onClick={handleButtonClick}
+              disabled={isLoading}
             >
               <ArrowIcon className="w-4 h-4 transform rotate-[-90deg]" />
             </button>
+          )}
           </div>
           {error && (
             <p className="mt-2 text-center text-red-500 text-sm mx-auto">
