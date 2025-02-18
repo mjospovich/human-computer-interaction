@@ -1,14 +1,13 @@
 "use client";
 
 import Link from 'next/link';
+import Image from 'next/image';
 import { useState, useEffect } from "react";
 import { Navigation } from "@/components/navigation";
-import ListingToScoreImg from "@/assets/listingToScoreImg.svg";
 import { Toast } from "@/components/toast";
 import { useAuth } from "@/context/authContext";
 import { ArrowIcon } from "@/components/icons/arrowIcon";
 import { useRouter } from 'next/navigation';
-import Image from 'next/image';
 import { scrapeCarData } from '@/utils/api';
 import { useCarData } from '@/context/carDataContext';
 import { LoadingWheel } from "@/components/loadingWheel";
@@ -153,7 +152,13 @@ export default function ProcijeniVrijednost() {
 
       {/*Elements above input*/}
       <div className="mb-4 text-center w-full max-w-xl">
-        <ListingToScoreImg className="mb-3 md:mb-0 mx-auto w-2/3 md:w-1/2" />
+        <Image
+          src="/images/listingToScoreImg.svg"
+          alt="Listing To Score"
+          width={370}
+          height={141}
+          className="mb-3 mx-auto w-2/3 md:w-1/2"
+        />
         <p className="text-secondary-text-black text-left mb-2 text-sm">
           1. Kopiraj link oglasa automobila s jednog od podržanih oglasnika (Njuškalo, IndexOglasi).
         </p>

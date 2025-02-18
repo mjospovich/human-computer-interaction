@@ -1,8 +1,8 @@
 "use client";
 
 import Link from 'next/link';
+import Image from 'next/image';
 import { Navigation } from "@/components/navigation";
-import NotFoundImg from "@/assets/404.svg";
 
 export default function NotFound() {
   return (
@@ -10,7 +10,13 @@ export default function NotFound() {
       <Navigation />
 
       <div className="flex flex-col items-center justify-center flex-grow">
-        <NotFoundImg className="mb-0 w-2/3 md:w-1/2 max-w-lg max-h-32" />
+        <Image 
+          src="/images/404.svg"
+          alt="404 Not Found"
+          width={370}
+          height={141}
+          className="mb-0 w-2/3 md:w-1/2 max-w-lg max-h-32"
+        />
         
         <h2 className="text-lg md:text-2xl text-main-text-black mb-4">
           Ups! Stranica nije pronađena...
