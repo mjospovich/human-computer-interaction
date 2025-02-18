@@ -8,6 +8,11 @@ const nextConfig = {
         hostname: 'www.njuskalo.hr',
         pathname: '/image-w920x690/**',
       },
+      {
+        protocol: 'https',
+        hostname: 'www.index.hr',
+        pathname: '/oglasi/image/api/image/**',
+      },
     ],
   },
   webpack(config) {

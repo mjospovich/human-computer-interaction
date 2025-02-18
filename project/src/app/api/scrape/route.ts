@@ -30,7 +30,7 @@ export async function POST(request: Request) {
       body: JSON.stringify({
         url,
         headless: true,
-        timeout: 10000
+        timeout: 20000
       })
     });
 

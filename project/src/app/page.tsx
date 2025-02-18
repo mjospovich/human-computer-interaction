@@ -65,10 +65,12 @@ export default function ProcijeniVrijednost() {
   const handleButtonClick = async () => {
     if (error === '' && inputValue !== '') {
       // Check if it's Index Oglasi
+      /*
       if (inputValue.startsWith('https://www.index.hr/')) {
         setError('Index Oglasi trenutno nije podržan. Koristite Njuškalo oglas.');
         return;
       }
+      */
 
       try {
         setIsLoading(true);
